@@ -1,94 +1,70 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace ShootEmUp
 {
     public sealed class BulletSystem : MonoBehaviour
     {
-        [SerializeField]
-        private int initialCount = 50;
-        
-        [SerializeField] private Transform container;
-        [SerializeField] private Bullet prefab;
-        [SerializeField] private Transform worldTransform;
+        [SerializeField] private PoolSystem _pool;
+        [SerializeField] private PoolObjectsCreator _poolObjectsCreator;
         [SerializeField] private LevelBounds levelBounds;
 
-        private readonly Queue<Bullet> m_bulletPool = new();
-        private readonly HashSet<Bullet> m_activeBullets = new();
-        private readonly List<Bullet> m_cache = new();
-        
-        private void Awake()
+        private readonly HashSet<Bullet> _activeBullets = new();
+
+        private void Start()
         {
-            for (var i = 0; i < this.initialCount; i++)
-            {
-                var bullet = Instantiate(this.prefab, this.container);
-                this.m_bulletPool.Enqueue(bullet);
-            }
+            GameObject[] Bullets = _poolObjectsCreator.GetCreatedObjects();
+            _pool.CreatePool(Bullets);
         }
-        
+
         private void FixedUpdate()
         {
-            this.m_cache.Clear();
-            this.m_cache.AddRange(this.m_activeBullets);
+            RemoveBulletIfNotInBounds();
+        }
 
-            for (int i = 0, count = this.m_cache.Count; i < count; i++)
+        private void RemoveBulletIfNotInBounds()
+        {
+            foreach (Bullet bullet in _activeBullets.ToArray())
             {
-                var bullet = this.m_cache[i];
-                if (!this.levelBounds.InBounds(bullet.transform.position))
+                if (!levelBounds.InBounds(bullet.transform.position))
                 {
-                    this.RemoveBullet(bullet);
+                    RemoveBullet(bullet);
                 }
             }
         }
 
-        public void FlyBulletByArgs(Args args)
+        public Bullet GetBullet()
         {
-            if (this.m_bulletPool.TryDequeue(out var bullet))
-            {
-                bullet.transform.SetParent(this.worldTransform);
-            }
-            else
-            {
-                bullet = Instantiate(this.prefab, this.worldTransform);
-            }
+            if (!_pool.HasObject())
+                _pool.PutNewObject(_poolObjectsCreator.GetCreatedObject());
 
-            bullet.SetPosition(args.position);
-            bullet.SetColor(args.color);
-            bullet.SetPhysicsLayer(args.physicsLayer);
-            bullet.damage = args.damage;
-            bullet.isPlayer = args.isPlayer;
-            bullet.SetVelocity(args.velocity);
-            
-            if (this.m_activeBullets.Add(bullet))
+            GameObject bulletObject = _pool.Get();
+            Bullet bullet = (Bullet)bulletObject.GetComponent(typeof(Bullet));
+
+            if (_activeBullets.Add(bullet))
             {
                 bullet.OnCollisionEntered += this.OnBulletCollision;
             }
+
+            return bullet;
         }
-        
+
         private void OnBulletCollision(Bullet bullet, Collision2D collision)
         {
-            BulletUtils.DealDamage(bullet, collision.gameObject);
+            print("bullet hited");
+            BulletDamage.DealDamage(bullet, collision.gameObject);
             this.RemoveBullet(bullet);
         }
 
         private void RemoveBullet(Bullet bullet)
         {
-            if (this.m_activeBullets.Remove(bullet))
+            if (this._activeBullets.Remove(bullet))
             {
                 bullet.OnCollisionEntered -= this.OnBulletCollision;
-                bullet.transform.SetParent(this.container);
-                this.m_bulletPool.Enqueue(bullet);
+
+                _pool.Release(bullet.gameObject);
             }
-        }
-        
-        public struct Args
-        {
-            public Vector2 position;
-            public Vector2 velocity;
-            public Color color;
-            public int physicsLayer;
-            public int damage;
-            public bool isPlayer;
         }
     }
 }

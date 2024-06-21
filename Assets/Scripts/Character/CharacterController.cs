@@ -4,46 +4,39 @@ namespace ShootEmUp
 {
     public sealed class CharacterController : MonoBehaviour
     {
-        [SerializeField] private GameObject character; 
-        [SerializeField] private GameManager gameManager;
-        [SerializeField] private BulletSystem _bulletSystem;
-        [SerializeField] private BulletConfig _bulletConfig;
-        
-        public bool _fireRequired;
+        [SerializeField] private Character _character;
+        [SerializeField] private InputHandler _inputHandler;
+
+        private readonly float _leftHorizontalDirection = -1;
+        private readonly float _rightHorizontalDirection = 1;
 
         private void OnEnable()
         {
-            this.character.GetComponent<HitPointsComponent>().hpEmpty += this.OnCharacterDeath;
+            _inputHandler.OnSpacePressed += SpaceKeyHandler;
+            _inputHandler.OnLeftArrowPressed += LeftArrowKeyHandler;
+            _inputHandler.OnRightArrowPressed += RightArrowKeyHandler;
         }
 
         private void OnDisable()
         {
-            this.character.GetComponent<HitPointsComponent>().hpEmpty -= this.OnCharacterDeath;
+            _inputHandler.OnSpacePressed -= SpaceKeyHandler;
+            _inputHandler.OnLeftArrowPressed -= LeftArrowKeyHandler;
+            _inputHandler.OnRightArrowPressed -= RightArrowKeyHandler;
         }
 
-        private void OnCharacterDeath(GameObject _) => this.gameManager.FinishGame();
-
-        private void FixedUpdate()
+        private void LeftArrowKeyHandler()
         {
-            if (this._fireRequired)
-            {
-                this.OnFlyBullet();
-                this._fireRequired = false;
-            }
+            _character.Move(_leftHorizontalDirection);
         }
 
-        private void OnFlyBullet()
+        private void RightArrowKeyHandler()
         {
-            var weapon = this.character.GetComponent<WeaponComponent>();
-            _bulletSystem.FlyBulletByArgs(new BulletSystem.Args
-            {
-                isPlayer = true,
-                physicsLayer = (int) this._bulletConfig.physicsLayer,
-                color = this._bulletConfig.color,
-                damage = this._bulletConfig.damage,
-                position = weapon.Position,
-                velocity = weapon.Rotation * Vector3.up * this._bulletConfig.speed
-            });
+            _character.Move(_rightHorizontalDirection);
+        }
+
+        private void SpaceKeyHandler()
+        {
+            _character.AttackStraightUp();
         }
     }
 }

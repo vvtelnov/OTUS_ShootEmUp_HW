@@ -887,11 +887,11 @@ PlayerSettings:
     m_VersionName: 
   apiCompatibilityLevel: 6
   activeInputHandler: 0
-  cloudProjectId: 
+  cloudProjectId: 2c3b85aa-b88c-4482-a157-4e5b6a3830d0
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: 
-  organizationId: 
+  projectName: ShootEmUp (Dirty)
+  organizationId: vvtelnov
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   playerDataPath: 

@@ -40,5 +40,10 @@ namespace ShootEmUp
         {
             this.spriteRenderer.color = color;
         }
+
+        public GameObject GetGameObject()
+        {
+            return this.gameObject;
+        }
     }
 }

@@ -4,53 +4,64 @@ namespace ShootEmUp
 {
     public sealed class EnemyAttackAgent : MonoBehaviour
     {
-        public delegate void FireHandler(GameObject enemy, Vector2 position, Vector2 direction);
+        [SerializeField] private AttackComponent _attackComponent;
+        [SerializeField] private EnemyMoveAgent _moveAgent;
+        [SerializeField] private float _countdown = 3;
+        [SerializeField] private float _currentTime = 3;
+        [SerializeField] private GameObject target;
+        [SerializeField] private bool IsAutoAttackEnable = false;
 
-        public event FireHandler OnFire;
-
-        [SerializeField] private WeaponComponent weaponComponent;
-        [SerializeField] private EnemyMoveAgent moveAgent;
-        [SerializeField] private float countdown;
-
-        private GameObject target;
-        private float currentTime;
 
         public void SetTarget(GameObject target)
         {
             this.target = target;
         }
 
-        public void Reset()
+
+        private void OnEnable()
         {
-            this.currentTime = this.countdown;
+            _currentTime = _countdown;
+
+            DisableAutoAttack();
+            _moveAgent.OnDestinationReached += EnableAutoAttack;
+        }
+
+        private void OnDisable()
+        {
+            DisableAutoAttack();
+            _moveAgent.OnDestinationReached -= EnableAutoAttack;
         }
 
         private void FixedUpdate()
         {
-            if (!this.moveAgent.IsReached)
-            {
+            if (!IsAutoAttackEnable)
                 return;
-            }
-            
-            if (!this.target.GetComponent<HitPointsComponent>().IsHitPointsExists())
-            {
-                return;
-            }
 
-            this.currentTime -= Time.fixedDeltaTime;
-            if (this.currentTime <= 0)
+            _currentTime -= Time.fixedDeltaTime;
+            if (_currentTime <= 0)
             {
-                this.Fire();
-                this.currentTime += this.countdown;
+                _currentTime = _countdown;
+                Fire();
             }
+        }
+
+        private void EnableAutoAttack()
+        {
+            IsAutoAttackEnable = true;
+        }
+
+        private void DisableAutoAttack()
+        {
+            IsAutoAttackEnable = false;
         }
 
         private void Fire()
         {
-            var startPosition = this.weaponComponent.Position;
-            var vector = (Vector2) this.target.transform.position - startPosition;
+            var startPosition = _attackComponent.Position;
+            var vector = (Vector2)this.target.transform.position - startPosition;
             var direction = vector.normalized;
-            this.OnFire?.Invoke(this.gameObject, startPosition, direction);
+
+            this._attackComponent.FlyBulletByConfig(direction);
         }
     }
 }

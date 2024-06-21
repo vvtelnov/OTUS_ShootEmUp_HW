@@ -1,42 +1,59 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 namespace ShootEmUp
 {
     public sealed class EnemyMoveAgent : MonoBehaviour
     {
+        public event Action OnDestinationReached;
         public bool IsReached
         {
             get { return this.isReached; }
         }
 
-        [SerializeField] private MoveComponent moveComponent;
-
-        private Vector2 destination;
+        [SerializeField] private MoveComponent _moveComponent;
+        [SerializeField] private Vector2 _destination;
+        [SerializeField] private float _destinationAccuracyValue = 0.25f;
 
         private bool isReached;
+        private Coroutine MoveCoroutine;
+
 
         public void SetDestination(Vector2 endPoint)
         {
-            this.destination = endPoint;
+            this._destination = endPoint;
             this.isReached = false;
+
+            MoveToDestination();
         }
 
-        private void FixedUpdate()
+        public void MoveToDestination()
         {
-            if (this.isReached)
-            {
+            if (MoveCoroutine != null)
                 return;
-            }
-            
-            var vector = this.destination - (Vector2) this.transform.position;
-            if (vector.magnitude <= 0.25f)
+
+            MoveCoroutine = StartCoroutine(MoveRotine());
+        }
+
+        private IEnumerator MoveRotine()
+        {
+            float routeMagnitude = (_destination - (Vector2)transform.position).magnitude;
+
+            while (routeMagnitude > _destinationAccuracyValue)
             {
-                this.isReached = true;
-                return;
+                _moveComponent.MoveToPoint(_destination);
+
+                routeMagnitude = (_destination - (Vector2)transform.position).magnitude;
+
+                yield return new WaitForFixedUpdate();
             }
 
-            var direction = vector.normalized * Time.fixedDeltaTime;
-            this.moveComponent.MoveByRigidbodyVelocity(direction);
+            isReached = true;
+            OnDestinationReached?.Invoke();
+
+            MoveCoroutine = null;
+            yield break;
         }
     }
 }

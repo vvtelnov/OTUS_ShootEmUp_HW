@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,53 +7,80 @@ namespace ShootEmUp
 {
     public sealed class EnemyManager : MonoBehaviour
     {
-        [SerializeField]
-        private EnemyPool _enemyPool;
+        [SerializeField] private PoolSystem _pool;
+        [SerializeField] private PoolObjectsCreator _poolObjectsCreator;
 
-        [SerializeField]
-        private BulletSystem _bulletSystem;
-        
-        private readonly HashSet<GameObject> m_activeEnemies = new();
+        [SerializeField] private EnemySpawner _enemySpawner;
 
-        private IEnumerator Start()
+        private readonly HashSet<GameObject> _activeEnemies = new();
+        private Coroutine _enemySpawnCoroutine;
+
+        private void Start()
+        {
+            CreatePool();
+
+            StartSpawnRotine();
+        }
+
+        private IEnumerator SpawnRotine()
         {
             while (true)
             {
                 yield return new WaitForSeconds(1);
-                var enemy = this._enemyPool.SpawnEnemy();
-                if (enemy != null)
+
+
+                GameObject enemyRaw = _pool.Get();
+
+                if (enemyRaw == null)
                 {
-                    if (this.m_activeEnemies.Add(enemy))
-                    {
-                        enemy.GetComponent<HitPointsComponent>().hpEmpty += this.OnDestroyed;
-                        enemy.GetComponent<EnemyAttackAgent>().OnFire += this.OnFire;
-                    }    
+                    _enemySpawnCoroutine = null;
+
+                    yield break;
                 }
+
+                GameObject enemy = _enemySpawner.SpawnEnemy(enemyRaw);
+
+                TryToAddEnemy(enemy);
             }
+        }
+
+        private void StartSpawnRotine()
+        {
+            if (_enemySpawnCoroutine != null)
+            {
+                return;
+            }
+
+            _enemySpawnCoroutine = StartCoroutine(SpawnRotine());
+        }
+
+        private void CreatePool()
+        {
+            GameObject[] Enemies = _poolObjectsCreator.GetCreatedObjects();
+            _pool.CreatePool(Enemies);
+        }
+
+        private void TryToAddEnemy(GameObject enemy)
+        {
+            if (_activeEnemies.Add(enemy))
+            {
+                enemy.GetComponent<HitPointsComponent>().HpEmpty += this.OnDestroyed;
+                return;
+            }
+
+            throw new InvalidOperationException("Enemy cannot be added to HashSet<GameObject> _activeEnemies ");
         }
 
         private void OnDestroyed(GameObject enemy)
         {
-            if (m_activeEnemies.Remove(enemy))
+            if (_activeEnemies.Remove(enemy))
             {
-                enemy.GetComponent<HitPointsComponent>().hpEmpty -= this.OnDestroyed;
-                enemy.GetComponent<EnemyAttackAgent>().OnFire -= this.OnFire;
+                enemy.GetComponent<HitPointsComponent>().HpEmpty -= this.OnDestroyed;
 
-                _enemyPool.UnspawnEnemy(enemy);
+                _pool.Release(enemy);
+
+                StartSpawnRotine();
             }
-        }
-
-        private void OnFire(GameObject enemy, Vector2 position, Vector2 direction)
-        {
-            _bulletSystem.FlyBulletByArgs(new BulletSystem.Args
-            {
-                isPlayer = false,
-                physicsLayer = (int) PhysicsLayer.ENEMY,
-                color = Color.red,
-                damage = 1,
-                position = position,
-                velocity = direction * 2.0f
-            });
         }
     }
 }
