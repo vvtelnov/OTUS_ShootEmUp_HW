@@ -428,8 +428,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _pool: {fileID: 562298210}
   _poolObjectsCreator: {fileID: 562298209}
-  _bulletSystem: {fileID: 363245577}
-  _bulletConfig: {fileID: 11400000, guid: 935c14c077cbb4a829855aadcf4b89bf, type: 2}
   _enemySpawner: {fileID: 562298208}
 --- !u!114 &562298208
 MonoBehaviour:
@@ -1023,10 +1021,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a40dacbeba84ba1b55163e9b048081b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftBorder: {fileID: 6563466540960878063}
-  rightBorder: {fileID: 1668159544493171190}
-  downBorder: {fileID: 3327143300152331510}
-  topBorder: {fileID: 1752465411210150465}
+  _leftBorder: {fileID: 6563466540960878063}
+  _rightBorder: {fileID: 1668159544493171190}
+  _downBorder: {fileID: 3327143300152331510}
+  _topBorder: {fileID: 1752465411210150465}
 --- !u!1 &3066462935130252019
 GameObject:
   m_ObjectHideFlags: 0
@@ -1272,13 +1270,7 @@ PrefabInstance:
       propertyPath: _gameManager
       value: 
       objectReference: {fileID: 3951702117947426123}
-    - target: {fileID: 4414282821800802407, guid: 9699e7e809fd44b2bbf3d30c951ecbd2,
-        type: 3}
-      propertyPath: _inputHandler
-      value: 
-      objectReference: {fileID: 1134805361}
-    m_RemovedComponents:
-    - {fileID: 4414282821800802407, guid: 9699e7e809fd44b2bbf3d30c951ecbd2, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9699e7e809fd44b2bbf3d30c951ecbd2, type: 3}
 --- !u!1 &3951702117947426121
 GameObject:
@@ -1432,10 +1424,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5377a5d4caa94482972174d0a74ac4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_params:
-    m_startPositionY: 19
-    m_endPositionY: -38
-    m_movingSpeedY: 5
+  _params:
+    _startPositionY: 53
+    _endPositionY: -36
+    _movingSpeedY: 7
 --- !u!1 &4914023371208914563
 GameObject:
   m_ObjectHideFlags: 0

@@ -58,10 +58,10 @@ namespace ShootEmUp
         private void Fire()
         {
             var startPosition = _attackComponent.Position;
-            var vector = (Vector2)this.target.transform.position - startPosition;
+            var vector = (Vector2)target.transform.position - startPosition;
             var direction = vector.normalized;
 
-            this._attackComponent.FlyBulletByConfig(direction);
+            _attackComponent.FlyBulletByConfig(direction);
         }
     }
 }

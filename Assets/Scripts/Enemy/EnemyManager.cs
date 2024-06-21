@@ -64,7 +64,7 @@ namespace ShootEmUp
         {
             if (_activeEnemies.Add(enemy))
             {
-                enemy.GetComponent<HitPointsComponent>().HpEmpty += this.OnDestroyed;
+                enemy.GetComponent<HitPointsComponent>().HpEmpty += OnDestroyed;
                 return;
             }
 
@@ -75,7 +75,7 @@ namespace ShootEmUp
         {
             if (_activeEnemies.Remove(enemy))
             {
-                enemy.GetComponent<HitPointsComponent>().HpEmpty -= this.OnDestroyed;
+                enemy.GetComponent<HitPointsComponent>().HpEmpty -= OnDestroyed;
 
                 _pool.Release(enemy);
 

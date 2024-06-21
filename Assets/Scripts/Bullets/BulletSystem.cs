@@ -44,7 +44,7 @@ namespace ShootEmUp
 
             if (_activeBullets.Add(bullet))
             {
-                bullet.OnCollisionEntered += this.OnBulletCollision;
+                bullet.OnCollisionEntered += OnBulletCollision;
             }
 
             return bullet;
@@ -52,16 +52,15 @@ namespace ShootEmUp
 
         private void OnBulletCollision(Bullet bullet, Collision2D collision)
         {
-            print("bullet hited");
             BulletDamage.DealDamage(bullet, collision.gameObject);
-            this.RemoveBullet(bullet);
+            RemoveBullet(bullet);
         }
 
         private void RemoveBullet(Bullet bullet)
         {
-            if (this._activeBullets.Remove(bullet))
+            if (_activeBullets.Remove(bullet))
             {
-                bullet.OnCollisionEntered -= this.OnBulletCollision;
+                bullet.OnCollisionEntered -= OnBulletCollision;
 
                 _pool.Release(bullet.gameObject);
             }

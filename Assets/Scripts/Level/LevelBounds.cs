@@ -5,16 +5,16 @@ namespace ShootEmUp
     public sealed class LevelBounds : MonoBehaviour
     {
         [SerializeField]
-        private Transform leftBorder;
+        private Transform _leftBorder;
 
         [SerializeField]
-        private Transform rightBorder;
+        private Transform _rightBorder;
 
         [SerializeField]
-        private Transform downBorder;
+        private Transform _downBorder;
 
         [SerializeField]
-        private Transform topBorder;
+        private Transform _topBorder;
 
 
         // Information expert - поэтому оставляем метод InBounds;
@@ -26,10 +26,10 @@ namespace ShootEmUp
 
             // Здесь решил оставить без изменений по KISS, Хотя нарушается OCP
             // Потому что если еще добавятся границы, то придется дописывать класс.
-            return positionX > this.leftBorder.position.x
-                   && positionX < this.rightBorder.position.x
-                   && positionY > this.downBorder.position.y
-                   && positionY < this.topBorder.position.y;
+            return positionX > _leftBorder.position.x
+                   && positionX < _rightBorder.position.x
+                   && positionY > _downBorder.position.y
+                   && positionY < _topBorder.position.y;
         }
     }
 }

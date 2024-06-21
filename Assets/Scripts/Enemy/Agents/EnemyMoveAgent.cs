@@ -9,7 +9,7 @@ namespace ShootEmUp
         public event Action OnDestinationReached;
         public bool IsReached
         {
-            get { return this.isReached; }
+            get { return isReached; }
         }
 
         [SerializeField] private MoveComponent _moveComponent;
@@ -22,8 +22,8 @@ namespace ShootEmUp
 
         public void SetDestination(Vector2 endPoint)
         {
-            this._destination = endPoint;
-            this.isReached = false;
+            _destination = endPoint;
+            isReached = false;
 
             MoveToDestination();
         }

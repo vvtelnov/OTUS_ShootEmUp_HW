@@ -16,17 +16,15 @@ namespace ShootEmUp
 
         public bool IsHitPointsExists()
         {
-            return this._hitPoints > 0;
+            return _hitPoints > 0;
         }
 
         public void TakeDamage(int damage)
         {
-            this._hitPoints -= damage;
-            print("HP: " + this._hitPoints);
-            if (this._hitPoints <= 0)
+            _hitPoints -= damage;
+            if (_hitPoints <= 0)
             {
-                print("HP depleted");
-                this.HpEmpty?.Invoke(this.gameObject);
+                HpEmpty?.Invoke(gameObject);
             }
         }
     }
