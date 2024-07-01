@@ -1,15 +1,21 @@
 using System;
 using UnityEngine;
 
-namespace ShootEmUp
+namespace Bullets
 {
     public sealed class Bullet : MonoBehaviour
     {
         public event Action<Bullet, Collision2D> OnCollisionEntered;
+        
+        [NonSerialized] public bool IsPlayer;
+        [NonSerialized] public int Damage;
 
-        [NonSerialized] public bool isPlayer;
-        [NonSerialized] public int damage;
-
+        public Vector2 Position
+        {
+            get => transform.position;
+            set => transform.position = value;
+        }
+        
         [SerializeField]
         private Rigidbody2D _rigidbody2D;
 
@@ -31,19 +37,9 @@ namespace ShootEmUp
             gameObject.layer = physicsLayer;
         }
 
-        public void SetPosition(Vector3 position)
-        {
-            transform.position = position;
-        }
-
         public void SetColor(Color color)
         {
             _spriteRenderer.color = color;
-        }
-
-        public GameObject GetGameObject()
-        {
-            return gameObject;
         }
     }
 }

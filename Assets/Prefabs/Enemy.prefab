@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 8186052948131603766}
   - component: {fileID: 6896809305229427933}
   - component: {fileID: 9095574135129179111}
+  - component: {fileID: 8409235463491640823}
   m_Layer: 11
   m_Name: Enemy
   m_TagString: Untagged
@@ -201,8 +202,8 @@ MonoBehaviour:
   _moveAgent: {fileID: 8186052948131603766}
   _countdown: 3
   _currentTime: 3
-  target: {fileID: 0}
-  IsAutoAttackEnable: 0
+  _target: {fileID: 0}
+  _isAutoAttackEnable: 0
 --- !u!114 &9095574135129179111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -218,6 +219,19 @@ MonoBehaviour:
   firePoint: {fileID: 3195880656587174614}
   _bulletSystem: {fileID: 0}
   _bulletConfig: {fileID: 11400000, guid: 935c14c077cbb4a829855aadcf4b89bf, type: 2}
+--- !u!114 &8409235463491640823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 559606060570185700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34adc46eca3e47599042c4957014c6de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnSystem: {fileID: 0}
 --- !u!1 &2239154907127902911
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ShootEmUp
+namespace Level
 {
     public sealed class LevelBounds : MonoBehaviour
     {
@@ -17,6 +17,7 @@ namespace ShootEmUp
         private Transform _topBorder;
 
 
+        //TODO: remove comments
         // Information expert - поэтому оставляем метод InBounds;
         // Хотя, как я понял, нарушается SRP.
         public bool InBounds(Vector3 position)
@@ -24,6 +25,7 @@ namespace ShootEmUp
             var positionX = position.x;
             var positionY = position.y;
 
+            //TODO: remove comments
             // Здесь решил оставить без изменений по KISS, Хотя нарушается OCP
             // Потому что если еще добавятся границы, то придется дописывать класс.
             return positionX > _leftBorder.position.x

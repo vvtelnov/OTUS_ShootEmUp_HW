@@ -1,6 +1,7 @@
+using Components;
 using UnityEngine;
 
-namespace ShootEmUp
+namespace Character
 {
     public class Character : MonoBehaviour
     {
@@ -17,7 +18,7 @@ namespace ShootEmUp
         {
             Vector2 direction = _attackComponent.Rotation * Vector3.up;
 
-            _attackComponent.FlyBulletByConfig(direction);
+            _attackComponent.FlyBullet(direction);
         }
     }
 }

@@ -1,69 +1,56 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Pool;
 using UnityEngine;
 
-namespace ShootEmUp
+namespace Bullets
 {
     public sealed class BulletSystem : MonoBehaviour
     {
+        public event EventHandler<Bullet> BulletAdded;
+        public event EventHandler<Bullet> BulletRemoved;
+        
         [SerializeField] private PoolSystem _pool;
-        [SerializeField] private PoolObjectsCreator _poolObjectsCreator;
-        [SerializeField] private LevelBounds levelBounds;
-
+        [SerializeField] private GameObject _bulletPrefab;
+        [SerializeField] private int _poolSize;
+        
         private readonly HashSet<Bullet> _activeBullets = new();
-
-        private void Start()
-        {
-            GameObject[] Bullets = _poolObjectsCreator.GetCreatedObjects();
-            _pool.CreatePool(Bullets);
-        }
-
-        private void FixedUpdate()
-        {
-            RemoveBulletIfNotInBounds();
-        }
-
-        private void RemoveBulletIfNotInBounds()
-        {
-            foreach (Bullet bullet in _activeBullets.ToArray())
-            {
-                if (!levelBounds.InBounds(bullet.transform.position))
-                {
-                    RemoveBullet(bullet);
-                }
-            }
-        }
-
+        
         public Bullet GetBullet()
         {
             if (!_pool.HasObject())
-                _pool.PutNewObject(_poolObjectsCreator.GetCreatedObject());
+                _pool.PutNewObject();
 
-            GameObject bulletObject = _pool.Get();
+            GameObject bulletObject = _pool.TryToGet();
             Bullet bullet = (Bullet)bulletObject.GetComponent(typeof(Bullet));
 
             if (_activeBullets.Add(bullet))
             {
-                bullet.OnCollisionEntered += OnBulletCollision;
+                BulletAdded?.Invoke(this, bullet);
             }
 
             return bullet;
         }
-
-        private void OnBulletCollision(Bullet bullet, Collision2D collision)
-        {
-            BulletDamage.DealDamage(bullet, collision.gameObject);
-            RemoveBullet(bullet);
-        }
-
-        private void RemoveBullet(Bullet bullet)
+        
+        public void RemoveBullet(Bullet bullet)
         {
             if (_activeBullets.Remove(bullet))
             {
-                bullet.OnCollisionEntered -= OnBulletCollision;
+                BulletRemoved?.Invoke(this.GetActiveBullets(), bullet);
 
                 _pool.Release(bullet.gameObject);
             }
+        }
+
+        public Bullet[] GetActiveBullets()
+        {
+            return _activeBullets.ToArray();
+        }
+
+        private void Start()
+        {
+            _pool.CreatePool(_bulletPrefab, _poolSize);
         }
     }
 }

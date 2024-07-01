@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace ShootEmUp
+namespace Input
 {
     public sealed class InputHandler : MonoBehaviour
     {
@@ -11,13 +11,13 @@ namespace ShootEmUp
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.Space))
                 OnSpacePressed?.Invoke();
 
-            if (Input.GetKey(KeyCode.LeftArrow))
+            if (UnityEngine.Input.GetKey(KeyCode.LeftArrow))
                 OnLeftArrowPressed?.Invoke();
 
-            if (Input.GetKey(KeyCode.RightArrow))
+            if (UnityEngine.Input.GetKey(KeyCode.RightArrow))
                 OnRightArrowPressed?.Invoke();
         }
     }

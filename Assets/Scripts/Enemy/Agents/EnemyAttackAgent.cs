@@ -1,6 +1,7 @@
+using Components;
 using UnityEngine;
 
-namespace ShootEmUp
+namespace Enemy.Agents
 {
     public sealed class EnemyAttackAgent : MonoBehaviour
     {
@@ -8,15 +9,14 @@ namespace ShootEmUp
         [SerializeField] private EnemyMoveAgent _moveAgent;
         [SerializeField] private float _countdown = 3;
         [SerializeField] private float _currentTime = 3;
-        [SerializeField] private GameObject target;
-        [SerializeField] private bool IsAutoAttackEnable = false;
+        [SerializeField] private GameObject _target;
+        [SerializeField] private bool _isAutoAttackEnable;
 
 
         public void SetTarget(GameObject target)
         {
-            this.target = target;
+            _target = target;
         }
-
 
         private void OnEnable()
         {
@@ -34,7 +34,7 @@ namespace ShootEmUp
 
         private void FixedUpdate()
         {
-            if (!IsAutoAttackEnable)
+            if (!_isAutoAttackEnable)
                 return;
 
             _currentTime -= Time.fixedDeltaTime;
@@ -47,21 +47,21 @@ namespace ShootEmUp
 
         private void EnableAutoAttack()
         {
-            IsAutoAttackEnable = true;
+            _isAutoAttackEnable = true;
         }
 
         private void DisableAutoAttack()
         {
-            IsAutoAttackEnable = false;
+            _isAutoAttackEnable = false;
         }
 
         private void Fire()
         {
             var startPosition = _attackComponent.Position;
-            var vector = (Vector2)target.transform.position - startPosition;
+            var vector = (Vector2)_target.transform.position - startPosition;
             var direction = vector.normalized;
 
-            _attackComponent.FlyBulletByConfig(direction);
+            _attackComponent.FlyBullet(direction);
         }
     }
 }

@@ -1,6 +1,7 @@
+using Bullets;
 using UnityEngine;
 
-namespace ShootEmUp
+namespace Components
 {
     public class AttackComponent : MonoBehaviour
     {
@@ -23,7 +24,7 @@ namespace ShootEmUp
             _bulletSystem = bulletSystem;
         }
 
-        public void FlyBulletByConfig(Vector2 attackDirection)
+        public void FlyBullet(Vector2 attackDirection)
         {
             Bullet bullet = _bulletSystem.GetBullet();
 
@@ -32,12 +33,12 @@ namespace ShootEmUp
 
         private void SetBulletFields(Bullet bullet, Vector2 direction)
         {
-            bullet.SetPosition(Position);
-            bullet.SetColor(_bulletConfig.color);
-            bullet.SetPhysicsLayer((int)_bulletConfig.physicsLayer);
-            bullet.damage = _bulletConfig.damage;
-            bullet.isPlayer = _bulletConfig.isPlayer;
-            bullet.SetVelocity(direction * _bulletConfig.speed);
+            bullet.Position = Position;
+            bullet.SetColor(_bulletConfig.Color);
+            bullet.SetPhysicsLayer((int)_bulletConfig.PhysicsLayer);
+            bullet.Damage = _bulletConfig.Damage;
+            bullet.IsPlayer = _bulletConfig.IsPlayer;
+            bullet.SetVelocity(direction * _bulletConfig.Speed);
         }
     }
 }

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace ShootEmUp
+namespace Components
 {
     public sealed class HitPointsComponent : MonoBehaviour
     {
@@ -12,11 +12,6 @@ namespace ShootEmUp
         public void SetHitPoints(int hp)
         {
             _hitPoints = hp;
-        }
-
-        public bool IsHitPointsExists()
-        {
-            return _hitPoints > 0;
         }
 
         public void TakeDamage(int damage)

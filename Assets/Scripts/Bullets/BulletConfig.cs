@@ -1,6 +1,7 @@
+using ShootEmUp;
 using UnityEngine;
 
-namespace ShootEmUp
+namespace Bullets
 {
     [CreateAssetMenu(
         fileName = "BulletConfig",
@@ -8,10 +9,10 @@ namespace ShootEmUp
     )]
     public sealed class BulletConfig : ScriptableObject
     {
-        public PhysicsLayer physicsLayer;
-        public Color color;
-        public int damage;
-        public float speed;
-        public bool isPlayer;
+        public PhysicsLayer PhysicsLayer;
+        public Color Color;
+        public int Damage;
+        public float Speed;
+        public bool IsPlayer;
     }
 }

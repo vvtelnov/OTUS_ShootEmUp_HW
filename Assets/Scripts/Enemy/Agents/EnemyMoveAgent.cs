@@ -1,39 +1,33 @@
 using System;
 using System.Collections;
+using Components;
 using UnityEngine;
 
-namespace ShootEmUp
+namespace Enemy.Agents
 {
     public sealed class EnemyMoveAgent : MonoBehaviour
     {
         public event Action OnDestinationReached;
-        public bool IsReached
-        {
-            get { return isReached; }
-        }
 
         [SerializeField] private MoveComponent _moveComponent;
         [SerializeField] private Vector2 _destination;
         [SerializeField] private float _destinationAccuracyValue = 0.25f;
 
-        private bool isReached;
-        private Coroutine MoveCoroutine;
-
-
+        private Coroutine _moveCoroutine;
+        
         public void SetDestination(Vector2 endPoint)
         {
             _destination = endPoint;
-            isReached = false;
 
             MoveToDestination();
         }
 
-        public void MoveToDestination()
+        private void MoveToDestination()
         {
-            if (MoveCoroutine != null)
+            if (_moveCoroutine != null)
                 return;
 
-            MoveCoroutine = StartCoroutine(MoveRotine());
+            _moveCoroutine = StartCoroutine(MoveRotine());
         }
 
         private IEnumerator MoveRotine()
@@ -49,11 +43,9 @@ namespace ShootEmUp
                 yield return new WaitForFixedUpdate();
             }
 
-            isReached = true;
             OnDestinationReached?.Invoke();
 
-            MoveCoroutine = null;
-            yield break;
+            _moveCoroutine = null;
         }
     }
 }
