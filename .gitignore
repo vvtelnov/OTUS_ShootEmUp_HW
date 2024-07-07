@@ -73,3 +73,9 @@ crashlytics-build.properties
 
 /Logs/
 ShootEmUp (Dirty).sln
+
+# IDE staff
+.vscode
+.idea
+
+.DS_Store
