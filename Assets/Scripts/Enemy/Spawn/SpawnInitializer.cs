@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace Enemy.Spawn
 {
-    public sealed class SpawnSystem : MonoBehaviour
+    public sealed class SpawnInitializer : MonoBehaviour
     {
         [SerializeField] private GameObject _enemyPrefab;
         [SerializeField] private int _poolSize;
         [SerializeField] private PoolSystem _pool;
         
-        [SerializeField] private EnemySpawner _enemySpawner;
+        [SerializeField] private Spawner _enemySpawner;
         [SerializeField] private int _timeInterval;
 
         private Coroutine _spawnCoroutine;

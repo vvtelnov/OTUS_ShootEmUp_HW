@@ -6,20 +6,20 @@ namespace Enemy
 {
     public class DeathObserver : MonoBehaviour
     {
-        private SpawnSystem _spawnSystem;
+        private SpawnInitializer _spawnInitializer;
         private HitPointsComponent _hpComponent;
 
-        public void AddObserver(HitPointsComponent hpComponent, SpawnSystem spawnSystem)
+        public void AddObserver(HitPointsComponent hpComponent, SpawnInitializer spawnInitializer)
         {
             _hpComponent = hpComponent;
-            _spawnSystem = spawnSystem;
+            _spawnInitializer = spawnInitializer;
             
             _hpComponent.HpEmpty += OnDestroyed;
         }
 
         private void OnDestroyed(GameObject enemy)
         {
-            _spawnSystem.Remove(enemy);
+            _spawnInitializer.Remove(enemy);
             
             _hpComponent.HpEmpty -= OnDestroyed;
         }

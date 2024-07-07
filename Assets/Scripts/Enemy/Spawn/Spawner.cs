@@ -2,16 +2,17 @@ using Bullets;
 using Components;
 using Enemy.Agents;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Enemy.Spawn
 {
-    public class EnemySpawner : MonoBehaviour
+    public class Spawner : MonoBehaviour
     {
         [SerializeField] private EnemyPositions _enemyPositions;
         [SerializeField] private GameObject _character;
         [SerializeField] private BulletSystem _bulletSystem;
 
-        [SerializeField] private SpawnSystem _spawnSystem;
+        [FormerlySerializedAs("_spawnSystem")] [SerializeField] private SpawnInitializer spawnInitializer;
 
         private int _hitPoints = 3;
 
@@ -45,7 +46,7 @@ namespace Enemy.Spawn
             DeathObserver deathObserver = enemy.GetComponent<DeathObserver>();
             
             hpComponent.SetHitPoints(_hitPoints);
-            deathObserver.AddObserver(hpComponent, _spawnSystem);
+            deathObserver.AddObserver(hpComponent, spawnInitializer);
         }
     }
 }
