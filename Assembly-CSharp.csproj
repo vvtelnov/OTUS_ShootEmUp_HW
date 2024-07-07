@@ -41,6 +41,9 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Assets/Scripts/Bullets/Handlers/IBulletHandler.cs" />
+    <Compile Include="Assets/Scripts/Enemy/DeathObserver.cs" />
+    <Compile Include="Assets/Scripts/Bullets/Handlers/CollisionHandler.cs" />
     <Compile Include="Assets/Scripts/Enemy/Spawn/SpawnSystem.cs" />
     <Compile Include="Assets/Scripts/Character/DeathObserver.cs" />
     <Compile Include="Assets/Scripts/Components/AttackComponent.cs" />
@@ -49,6 +52,8 @@
     <Compile Include="Assets/Scripts/Bullets/Bullet.cs" />
     <Compile Include="Assets/Scripts/Enemy/Agents/EnemyMoveAgent.cs" />
     <Compile Include="Assets/Scripts/Enemy/Spawn/EnemyPositions.cs" />
+    <Compile Include="Assets/Scripts/Bullets/Handlers/BoundsHandler.cs" />
+    <Compile Include="Assets/Scripts/Bullets/Controller.cs" />
     <Compile Include="Assets/Scripts/Components/HitPointsComponent.cs" />
     <Compile Include="Assets/Scripts/Input/InputHandler.cs" />
     <Compile Include="Assets/Scripts/Enemy/Agents/EnemyAttackAgent.cs" />
@@ -62,11 +67,6 @@
     <Compile Include="Assets/Scripts/Level/LevelBounds.cs" />
     <Compile Include="Assets/Scripts/Pool/PoolSystem.cs" />
     <Compile Include="Assets/Scripts/GameManager/GameManager.cs" />
-    <Compile Include="Assets/Scripts/Bullets/Handlers/BoundsHandler.cs" />
-    <Compile Include="Assets/Scripts/Bullets/Handlers/CollisionHandler.cs" />
-    <Compile Include="Assets/Scripts/Bullets/Controller.cs" />
-    <Compile Include="Assets/Scripts/Bullets/Handlers/IBulletHandler.cs" />
-    <Compile Include="Assets/Scripts/Enemy/DeathObserver.cs" />
     <None Include="Assets/Resources/BillingMode.json" />
     <Reference Include="UnityEngine">
       <HintPath>/Applications/Unity/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>

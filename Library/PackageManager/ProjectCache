@@ -868,6 +868,7 @@ m_ResolvedPackages:
     - 4.12.0
     - 4.12.1-pre.1
     - 4.12.1-pre.3
+    - 4.12.1-pre.4
     compatible:
     - 4.2.1
     - 4.3.0
@@ -887,6 +888,7 @@ m_ResolvedPackages:
     - 4.12.0
     - 4.12.1-pre.1
     - 4.12.1-pre.3
+    - 4.12.1-pre.4
     verified: 4.2.1
   dependencies:
   - name: com.unity.ugui
