@@ -1,8 +1,8 @@
 using Bullets;
 using Components;
 using Enemy.Agents;
+using Level;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Enemy.Spawn
 {
@@ -10,9 +10,10 @@ namespace Enemy.Spawn
     {
         [SerializeField] private EnemyPositions _enemyPositions;
         [SerializeField] private GameObject _character;
-        [SerializeField] private BulletSystem _bulletSystem;
+        [SerializeField] private StatePoolInteractor statePoolInteractor;
 
-        [FormerlySerializedAs("_spawnSystem")] [SerializeField] private SpawnInitializer spawnInitializer;
+        [SerializeField] private SpawnInitializer _spawnInitializer;
+        [SerializeField] private LevelBounds _levelBounds;
 
         private int _hitPoints = 3;
 
@@ -36,8 +37,11 @@ namespace Enemy.Spawn
 
         private void SetupAttackLogic(GameObject enemy)
         {
+            AttackComponent component = enemy.GetComponent<AttackComponent>();
+            
             enemy.GetComponent<EnemyAttackAgent>().SetTarget(_character);
-            enemy.GetComponent<AttackComponent>().SetBulletSystem(_bulletSystem);
+            component.SetBulletSpawner(statePoolInteractor);
+            component.SetLevelBounds(_levelBounds);
         }
 
         private void SetupHpLogic(GameObject enemy)
@@ -46,7 +50,7 @@ namespace Enemy.Spawn
             DeathObserver deathObserver = enemy.GetComponent<DeathObserver>();
             
             hpComponent.SetHitPoints(_hitPoints);
-            deathObserver.AddObserver(hpComponent, spawnInitializer);
+            deathObserver.AddObserver(hpComponent, _spawnInitializer);
         }
     }
 }

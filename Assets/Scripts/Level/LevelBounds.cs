@@ -32,6 +32,20 @@ namespace Level
                    && positionX < _rightBorder.position.x
                    && positionY > _downBorder.position.y
                    && positionY < _topBorder.position.y;
+            
+            
+            // bool res = positionX > _leftBorder.position.x
+            //        && positionX < _rightBorder.position.x
+            //        && positionY > _downBorder.position.y
+            //        && positionY < _topBorder.position.y;
+            //
+            // if (!res)
+            // {
+            //     Debug.Log($"{positionX}, {positionY}");
+            //     return false;
+            // }
+            //
+            // return true;
         }
     }
 }

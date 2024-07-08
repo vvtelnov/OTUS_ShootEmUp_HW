@@ -1,4 +1,5 @@
 using Bullets;
+using Level;
 using UnityEngine;
 
 namespace Components
@@ -7,26 +8,34 @@ namespace Components
     {
         public Vector2 Position
         {
-            get { return firePoint.position; }
+            get { return _firePoint.position; }
         }
 
         public Quaternion Rotation
         {
-            get { return firePoint.rotation; }
+            get { return _firePoint.rotation; }
         }
 
-        [SerializeField] private Transform firePoint;
-        [SerializeField] private BulletSystem _bulletSystem;
+        [SerializeField] private Transform _firePoint;
+        [SerializeField] private StatePoolInteractor _statePoolInteractor;
         [SerializeField] private BulletConfig _bulletConfig;
 
-        public void SetBulletSystem(BulletSystem bulletSystem)
+        [SerializeField] private LevelBounds _bounds;
+
+        public void SetBulletSpawner(StatePoolInteractor statePoolInteractor)
         {
-            _bulletSystem = bulletSystem;
+            _statePoolInteractor = statePoolInteractor;
         }
+
+        public void SetLevelBounds(LevelBounds bounds)
+        {
+            _bounds = bounds;
+        }
+        
 
         public void FlyBullet(Vector2 attackDirection)
         {
-            Bullet bullet = _bulletSystem.GetBullet();
+            Bullet bullet = _statePoolInteractor.GetBullet();
 
             SetBulletFields(bullet, attackDirection);
         }
@@ -39,6 +48,7 @@ namespace Components
             bullet.Damage = _bulletConfig.Damage;
             bullet.IsPlayer = _bulletConfig.IsPlayer;
             bullet.SetVelocity(direction * _bulletConfig.Speed);
+            bullet.SetLevelBounds(_bounds);
         }
     }
 }

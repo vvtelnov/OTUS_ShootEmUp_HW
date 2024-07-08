@@ -216,8 +216,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7761ff921d8e4fb19d1dde866317457, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firePoint: {fileID: 3195880656587174614}
-  _bulletSystem: {fileID: 0}
+  _firePoint: {fileID: 3195880656587174614}
+  _poolInteractor: {fileID: 0}
   _bulletConfig: {fileID: 11400000, guid: 935c14c077cbb4a829855aadcf4b89bf, type: 2}
 --- !u!114 &8409235463491640823
 MonoBehaviour:
@@ -231,7 +231,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34adc46eca3e47599042c4957014c6de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnSystem: {fileID: 0}
 --- !u!1 &2239154907127902911
 GameObject:
   m_ObjectHideFlags: 0

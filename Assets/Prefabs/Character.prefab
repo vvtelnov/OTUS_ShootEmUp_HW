@@ -196,8 +196,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7761ff921d8e4fb19d1dde866317457, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firePoint: {fileID: 3926786963072264220}
-  _bulletSystem: {fileID: 0}
+  _firePoint: {fileID: 3926786963072264220}
+  _poolInteractor: {fileID: 0}
   _bulletConfig: {fileID: 11400000, guid: 7138ae5d32d814e0ca50c616c65ea105, type: 2}
 --- !u!114 &1870020922831444683
 MonoBehaviour:

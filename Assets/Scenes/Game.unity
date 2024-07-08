@@ -227,8 +227,6 @@ GameObject:
   - component: {fileID: 363245576}
   - component: {fileID: 363245577}
   - component: {fileID: 363245579}
-  - component: {fileID: 363245582}
-  - component: {fileID: 363245581}
   - component: {fileID: 363245580}
   m_Layer: 0
   m_Name: BulletSystem
@@ -269,6 +267,7 @@ MonoBehaviour:
   _bulletPrefab: {fileID: 2743036428890533592, guid: 5fe72886874b4e445b06cf777ca4920d,
     type: 3}
   _poolSize: 50
+  _deathObserver: {fileID: 363245580}
 --- !u!114 &363245579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -292,37 +291,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 363245575}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ff09f23223f45f8ac4df7d93182efc4, type: 3}
+  m_Script: {fileID: 11500000, guid: 8842ae6239fd476cb00e2cce54ca7623, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _bounds: {fileID: 2572952653776768186}
-  _bulletSystem: {fileID: 363245577}
---- !u!114 &363245581
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 363245575}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87d1deec1c254d3193299d8017bb20a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _bulletSystem: {fileID: 363245577}
---- !u!114 &363245582
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 363245575}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a10957a93a14802910d4525a5a454a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _bulletSystem: {fileID: 363245577}
+  _statePoolInteractor: {fileID: 363245577}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -456,8 +429,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyPositions: {fileID: 7166351703523243261}
   _character: {fileID: 4414282821800802397}
-  _bulletSystem: {fileID: 363245577}
-  _spawnSystem: {fileID: 562298213}
+  statePoolInteractor: {fileID: 363245577}
+  _spawnInitializer: {fileID: 562298213}
+  _levelBounds: {fileID: 2572952653776768186}
 --- !u!114 &562298210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1275,7 +1249,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3821580339952966184, guid: 9699e7e809fd44b2bbf3d30c951ecbd2,
         type: 3}
+      propertyPath: _bounds
+      value: 
+      objectReference: {fileID: 2572952653776768186}
+    - target: {fileID: 3821580339952966184, guid: 9699e7e809fd44b2bbf3d30c951ecbd2,
+        type: 3}
       propertyPath: _bulletSystem
+      value: 
+      objectReference: {fileID: 363245577}
+    - target: {fileID: 3821580339952966184, guid: 9699e7e809fd44b2bbf3d30c951ecbd2,
+        type: 3}
+      propertyPath: poolInteractor
+      value: 
+      objectReference: {fileID: 363245577}
+    - target: {fileID: 3821580339952966184, guid: 9699e7e809fd44b2bbf3d30c951ecbd2,
+        type: 3}
+      propertyPath: _poolInteractor
+      value: 
+      objectReference: {fileID: 363245577}
+    - target: {fileID: 3821580339952966184, guid: 9699e7e809fd44b2bbf3d30c951ecbd2,
+        type: 3}
+      propertyPath: _statePoolInteractor
       value: 
       objectReference: {fileID: 363245577}
     - target: {fileID: 3926786964091724599, guid: 9699e7e809fd44b2bbf3d30c951ecbd2,
@@ -1442,7 +1436,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5377a5d4caa94482972174d0a74ac4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _params:
+  initParams:
     StartPositionY: 50
     EndPositionY: -40
     MovingSpeedY: 7

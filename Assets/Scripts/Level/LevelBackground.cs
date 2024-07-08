@@ -18,13 +18,13 @@ namespace Level
         private Transform _myTransform;
 
         [SerializeField]
-        private Params _params;
+        private InitParams initParams;
 
         private void Awake()
         {
-            _startPositionY = _params.StartPositionY;
-            _endPositionY = _params.EndPositionY;
-            _movingSpeedY = _params.MovingSpeedY;
+            _startPositionY = initParams.StartPositionY;
+            _endPositionY = initParams.EndPositionY;
+            _movingSpeedY = initParams.MovingSpeedY;
             _myTransform = transform;
             var position = _myTransform.position;
             _positionX = position.x;
@@ -50,7 +50,7 @@ namespace Level
         }
 
         [Serializable]
-        public sealed class Params
+        public sealed class InitParams
         {
             [SerializeField]
             public float StartPositionY;
