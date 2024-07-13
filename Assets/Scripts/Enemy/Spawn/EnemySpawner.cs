@@ -6,11 +6,11 @@ using UnityEngine;
 
 namespace Enemy.Spawn
 {
-    public class Spawner : MonoBehaviour
+    public class EnemySpawner : MonoBehaviour
     {
         [SerializeField] private EnemyPositions _enemyPositions;
         [SerializeField] private GameObject _character;
-        [SerializeField] private StatePoolInteractor statePoolInteractor;
+        [SerializeField] private StatePoolInteractor _statePoolInteractor;
 
         [SerializeField] private SpawnInitializer _spawnInitializer;
         [SerializeField] private LevelBounds _levelBounds;
@@ -40,7 +40,7 @@ namespace Enemy.Spawn
             AttackComponent component = enemy.GetComponent<AttackComponent>();
             
             enemy.GetComponent<EnemyAttackAgent>().SetTarget(_character);
-            component.SetBulletSpawner(statePoolInteractor);
+            component.SetBulletSpawner(_statePoolInteractor);
             component.SetLevelBounds(_levelBounds);
         }
 

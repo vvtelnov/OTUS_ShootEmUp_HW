@@ -10,7 +10,7 @@ namespace Enemy.Spawn
         [SerializeField] private int _poolSize;
         [SerializeField] private PoolSystem _pool;
         
-        [SerializeField] private Spawner _enemySpawner;
+        [SerializeField] private EnemySpawner enemyEnemySpawner;
         [SerializeField] private int _timeInterval;
 
         private Coroutine _spawnCoroutine;
@@ -47,7 +47,7 @@ namespace Enemy.Spawn
                 if (rawEnemy is null)
                     break;
             
-                _enemySpawner.Spawn(rawEnemy);
+                enemyEnemySpawner.Spawn(rawEnemy);
             }
             
             _spawnCoroutine = null;

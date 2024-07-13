@@ -5,11 +5,6 @@ using UnityEngine;
 
 namespace Bullets
 {
-    //TODO: remove comment
-    // Я не знаю как назвать класс + тут нарушается SRP:
-    // 1 ответственность - работа с пулом;
-    // 2 - Состояние ( HashSet<Bullet> _activeBullets )
-    // По-скольку есть состояние, а не просто работа с пулом, решил добавить state в нейминг
     public sealed class StatePoolInteractor : MonoBehaviour
     {
         [SerializeField] private PoolSystem _pool;
