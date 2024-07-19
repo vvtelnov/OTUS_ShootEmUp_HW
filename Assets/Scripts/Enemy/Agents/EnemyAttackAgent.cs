@@ -1,9 +1,11 @@
 using Components;
+using GameSystem;
 using UnityEngine;
 
 namespace Enemy.Agents
 {
-    public sealed class EnemyAttackAgent : MonoBehaviour
+    public sealed class EnemyAttackAgent : MonoBehaviour, 
+        IGameFinishElement, IFixedUpdateElement
     {
         [SerializeField] private AttackComponent _attackComponent;
         [SerializeField] private EnemyMoveAgent _moveAgent;
@@ -11,14 +13,20 @@ namespace Enemy.Agents
         [SerializeField] private float _currentTime = 3;
         [SerializeField] private GameObject _target;
         [SerializeField] private bool _isAutoAttackEnable;
-
+        
+        private void Awake()
+        {
+            // TODO: Change to a constructor method.
+            // Я понимаю, что не следуют исплользовать Awake в задании, но решил такую реализацию сделать установки зависимостей
+            IGameElement.Register(this);
+        }
 
         public void SetTarget(GameObject target)
         {
             _target = target;
         }
 
-        private void OnEnable()
+        public void Construct()
         {
             _currentTime = _countdown;
 
@@ -26,18 +34,26 @@ namespace Enemy.Agents
             _moveAgent.OnDestinationReached += EnableAutoAttack;
         }
 
-        private void OnDisable()
+        public void Destruct()
         {
             DisableAutoAttack();
             _moveAgent.OnDestinationReached -= EnableAutoAttack;
         }
 
-        private void FixedUpdate()
+        void IGameFinishElement.Finish()
+        {
+            Destruct();
+            
+            IGameElement.Unregister(this);
+            Destroy(gameObject);
+        }
+
+        void IFixedUpdateElement.FixedUpdateElement(float fixedDeltaTime)
         {
             if (!_isAutoAttackEnable)
                 return;
 
-            _currentTime -= Time.fixedDeltaTime;
+            _currentTime -= fixedDeltaTime;
             if (_currentTime <= 0)
             {
                 _currentTime = _countdown;

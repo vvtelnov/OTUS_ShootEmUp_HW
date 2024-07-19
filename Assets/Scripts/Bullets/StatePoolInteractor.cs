@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using GameSystem;
 using Pool;
 using UnityEngine;
 
 namespace Bullets
 {
-    public sealed class StatePoolInteractor : MonoBehaviour
+    public sealed class StatePoolInteractor : MonoBehaviour, 
+        IGameReadyElement, IGameFinishElement
     {
         [SerializeField] private PoolSystem _pool;
         [SerializeField] private GameObject _bulletPrefab;
@@ -14,6 +16,13 @@ namespace Bullets
         [SerializeField] private DeathObserver _deathObserver;
         
         private readonly HashSet<Bullet> _activeBullets = new();
+        
+        private void Awake()
+        {
+            // TODO: Change to a constructor method.
+            // Я понимаю, что не следуют исплользовать Awake в задании, но решил такую реализацию сделать установки зависимостей
+            IGameElement.Register(this);
+        }
         
         public Bullet GetBullet()
         {
@@ -41,9 +50,16 @@ namespace Bullets
             _pool.Release(bullet.gameObject);
         }
 
-        private void Start()
+        void IGameReadyElement.Ready()
         {
             _pool.CreatePool(_bulletPrefab, _poolSize);
+        }
+        
+        void IGameFinishElement.Finish()
+        {
+            IGameElement.Unregister(this);
+
+            Destroy(gameObject);
         }
     }
 }

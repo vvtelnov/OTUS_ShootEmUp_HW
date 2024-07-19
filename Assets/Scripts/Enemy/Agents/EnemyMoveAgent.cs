@@ -40,7 +40,7 @@ namespace Enemy.Agents
 
                 routeMagnitude = (_destination - (Vector2)transform.position).magnitude;
 
-                yield return new WaitForFixedUpdate();
+                yield return new WaitForSeconds(0.02f);
             }
 
             OnDestinationReached?.Invoke();

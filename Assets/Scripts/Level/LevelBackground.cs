@@ -1,9 +1,12 @@
 using System;
+using GameSystem;
 using UnityEngine;
 
 namespace Level
 {
-    public sealed class LevelBackground : MonoBehaviour
+    public sealed class LevelBackground : MonoBehaviour,
+        IGameInitElement, IFixedUpdateElement,
+        IGameFinishElement
     {
         private float _startPositionY;
 
@@ -19,8 +22,15 @@ namespace Level
 
         [SerializeField]
         private InitParams initParams;
-
+        
         private void Awake()
+        {
+            // TODO: Change to a constructor method.
+            // Я понимаю, что не следуют исплользовать Awake в задании, но решил такую реализацию сделать установки зависимостей
+            IGameElement.Register(this);
+        }
+
+        void IGameInitElement.Init()
         {
             _startPositionY = initParams.StartPositionY;
             _endPositionY = initParams.EndPositionY;
@@ -31,7 +41,7 @@ namespace Level
             _positionZ = position.z;
         }
 
-        private void FixedUpdate()
+        void IFixedUpdateElement.FixedUpdateElement(float fixedDeltaTime)
         {
             if (_myTransform.position.y <= _endPositionY)
             {
@@ -44,9 +54,16 @@ namespace Level
 
             _myTransform.position -= new Vector3(
                 _positionX,
-                _movingSpeedY * Time.fixedDeltaTime,
+                _movingSpeedY * fixedDeltaTime,
                 _positionZ
             );
+        }
+        
+        void IGameFinishElement.Finish()
+        {
+            IGameElement.Unregister(this);
+
+            Destroy(gameObject);
         }
 
         [Serializable]

@@ -38,8 +38,11 @@ namespace Enemy.Spawn
         private void SetupAttackLogic(GameObject enemy)
         {
             AttackComponent component = enemy.GetComponent<AttackComponent>();
+            EnemyAttackAgent agent = enemy.GetComponent<EnemyAttackAgent>();
+
+            agent.Construct();
+            agent.SetTarget(_character);
             
-            enemy.GetComponent<EnemyAttackAgent>().SetTarget(_character);
             component.SetBulletSpawner(_statePoolInteractor);
             component.SetLevelBounds(_levelBounds);
         }
@@ -47,10 +50,11 @@ namespace Enemy.Spawn
         private void SetupHpLogic(GameObject enemy)
         {
             HitPointsComponent hpComponent = enemy.GetComponent<HitPointsComponent>();
+            EnemyAttackAgent agent = enemy.GetComponent<EnemyAttackAgent>();
             DeathObserver deathObserver = enemy.GetComponent<DeathObserver>();
             
             hpComponent.SetHitPoints(_hitPoints);
-            deathObserver.AddObserver(hpComponent, _spawnInitializer);
+            deathObserver.AddObserver(hpComponent, _spawnInitializer, agent);
         }
     }
 }

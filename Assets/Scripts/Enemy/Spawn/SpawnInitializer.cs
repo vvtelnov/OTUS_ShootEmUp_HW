@@ -1,10 +1,13 @@
 using System.Collections;
+using GameSystem;
 using Pool;
 using UnityEngine;
 
 namespace Enemy.Spawn
 {
-    public sealed class SpawnInitializer : MonoBehaviour
+    public sealed class SpawnInitializer : MonoBehaviour, 
+        IGameStartElement, IGameFinishElement,
+        IGamePauseElement, IGameResumeElement
     {
         [SerializeField] private GameObject _enemyPrefab;
         [SerializeField] private int _poolSize;
@@ -15,6 +18,15 @@ namespace Enemy.Spawn
 
         private Coroutine _spawnCoroutine;
 
+        private bool _isPaused;
+        
+        private void Awake()
+        {
+            // TODO: Change to a constructor method.
+            // Я понимаю, что не следуют исплользовать Awake в задании, но решил такую реализацию сделать установки зависимостей
+            IGameElement.Register(this);
+        }
+
         public void Remove(GameObject enemy)
         {
             ReleaseToPool(enemy);
@@ -22,10 +34,27 @@ namespace Enemy.Spawn
             TryToStartCoroutine();
         }        
         
-        private void Start()
+        void IGameStartElement.OnStart()
         {
             CreatePool();
             TryToStartCoroutine();
+        }
+        
+        void IGamePauseElement.Pause()
+        {
+            _isPaused = true;
+        }
+
+        void IGameResumeElement.Resume()
+        {
+            _isPaused = false;
+        }
+    
+        void IGameFinishElement.Finish()
+        {
+            IGameElement.Unregister(this);
+
+            Destroy(gameObject);
         }
         
         private void TryToStartCoroutine()
@@ -40,7 +69,11 @@ namespace Enemy.Spawn
         {
             while (true)
             {
+                yield return new WaitWhile(() => _isPaused);
+                
                 yield return new WaitForSeconds(_timeInterval);
+                
+                yield return new WaitWhile(() => _isPaused);
                 
                 GameObject rawEnemy = GetFromPool();
             

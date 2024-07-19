@@ -27,9 +27,9 @@ namespace Pool
                 GameObject poolObject = CreateObject();
                 
                 poolObject.transform.SetParent(_hiddenContainer);
-                _pool.Enqueue(poolObject);
+                _pool.Enqueue(poolObject); 
             }
-
+            
             _isPoolCreated = true;
         }
 
