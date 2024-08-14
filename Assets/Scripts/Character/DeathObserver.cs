@@ -20,7 +20,6 @@ namespace Character
         
         void IGameInitElement.Init()
         {
-            Debug.Log("Subnscribed");
             _hitPointsComponent.HpEmpty += OnCharacterDeath;
         }
 

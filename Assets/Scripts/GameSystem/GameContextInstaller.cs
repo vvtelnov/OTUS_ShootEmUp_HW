@@ -8,7 +8,6 @@ namespace GameSystem
         
         private void Awake()
         {
-            Debug.Log("-----> GameContextInstaller Awaked");
             IGameElement.OnRegister += InstallContext;
             IGameElement.OnUnregister += UninstallContext;
         }

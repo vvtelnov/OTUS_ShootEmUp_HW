@@ -10,7 +10,6 @@ namespace GameSystem
 
         public static void Register(IGameElement element)
         {
-            Debug.Log(element);
             OnRegister?.Invoke(element);
         }        
         
