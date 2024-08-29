@@ -3,11 +3,17 @@ using UnityEngine;
 
 namespace Character
 {
-    public class Character : MonoBehaviour
+    public class Character
     {
-        [SerializeField] private MoveComponent _moveComponent;
-        [SerializeField] private AttackComponent _attackComponent;
-
+        private MoveComponent _moveComponent;
+        private AttackComponent _attackComponent;
+        
+        public void Construct(MoveComponent moveComponent,
+            AttackComponent attackComponent)
+        {
+            _moveComponent = moveComponent;
+            _attackComponent = attackComponent;
+        }
 
         public void Move(float direction)
         {

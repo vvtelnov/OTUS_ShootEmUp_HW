@@ -1,26 +1,25 @@
-using GameSystem;
+using GameSystem.DependencySystem.DI;
+using GameSystem.GameContext;
 using Input;
-using UnityEngine;
 
 namespace Character
 {
-    public sealed class Controller : MonoBehaviour, 
-        IGameInitElement, IGameFinishElement
+    [InjectionNeeded]
+    public sealed class Controller : IGameStartElement, IGameFinishElement
     {
-        [SerializeField] private Character _character;
-        [SerializeField] private InputHandler _inputHandler;
+        [Inject(DependencyResolvePrinciple.FROM_CASHED_INSTANCE)]
+        private InputHandler _inputHandler;
+        private Character _character;
 
         private readonly float _leftHorizontalDirection = -1;
         private readonly float _rightHorizontalDirection = 1;
         
-        private void Awake()
+        public void Construct(Character character)
         {
-            // TODO: Change to a constructor method.
-            // Я понимаю, что не следуют исплользовать Awake в задании, но решил такую реализацию сделать установки зависимостей
-            IGameElement.Register(this);
+            _character = character;
         }
 
-        void IGameInitElement.Init()
+        void IGameStartElement.OnStart()
         {
             _inputHandler.OnSpacePressed += SpaceKeyHandler;
             _inputHandler.OnLeftArrowPressed += LeftArrowKeyHandler;
@@ -34,8 +33,6 @@ namespace Character
             _inputHandler.OnSpacePressed -= SpaceKeyHandler;
             _inputHandler.OnLeftArrowPressed -= LeftArrowKeyHandler;
             _inputHandler.OnRightArrowPressed -= RightArrowKeyHandler;
-            
-            Destroy(gameObject);
         }
 
         private void LeftArrowKeyHandler()

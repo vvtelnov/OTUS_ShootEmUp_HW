@@ -1,26 +1,38 @@
 using System;
 using System.Collections.Generic;
+using GameSystem.DependencySystem.DI;
+using GameSystem.DependencySystem.StaticServices;
 using UnityEngine;
 
 namespace Pool
 {
-    public sealed class PoolSystem : MonoBehaviour
+    [InjectionNeeded]
+    public sealed class PoolSystem
     {
-        [SerializeField] private Transform _visibleContainer;
-        [SerializeField] private Transform _hiddenContainer;
-
-        private readonly Queue<GameObject> _pool = new();
+        private Transform _visibleContainer;
+        private Transform _hiddenContainer;
         private GameObject _prefab;
         private int _poolSize;
         
-        private bool _isPoolCreated ;
+        private readonly Queue<GameObject> _pool = new();
+        private bool _isPoolCreated;
 
-        public void CreatePool(GameObject prefab, int size)
+        [Inject(DependencyResolvePrinciple.FROM_GAME_OBJECT, objectName: "[WORLD]")]
+        public void ConstructWithInjection(GameObject visibleContainer)
         {
-            ValidatePoolCreation();
-            
+            _visibleContainer = visibleContainer.transform;
+        }
+
+        public void Construct(GameObject prefab, int size, GameObject hiddenContainer)
+        {
             _prefab = prefab;
             _poolSize = size;
+            _hiddenContainer = hiddenContainer.transform;
+        }
+        
+        public void CreatePool()
+        {
+            ValidatePoolCreation();
 
             for (int i = 0; i < _poolSize; i++)
             {
@@ -64,7 +76,7 @@ namespace Pool
 
         private GameObject CreateObject()
         {
-            return Instantiate(_prefab);
+            return GameObjectInstantiator.Instance.InstantiateGameObject(_prefab);
         }
         
         private void ValidatePoolCreation()

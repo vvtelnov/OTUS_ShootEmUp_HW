@@ -1,29 +1,31 @@
 using System;
 using System.Collections.Generic;
-using GameSystem;
+using GameSystem.DependencySystem.DI;
+using GameSystem.GameContext;
 using Pool;
 using UnityEngine;
 
 namespace Bullets
 {
-    public sealed class StatePoolInteractor : MonoBehaviour, 
-        IGameReadyElement, IGameFinishElement
+    [InjectionNeeded]
+    public sealed class StatePoolInteractor : IGameReadyElement, IGameFinishElement
     {
-        [SerializeField] private PoolSystem _pool;
-        [SerializeField] private GameObject _bulletPrefab;
-        [SerializeField] private int _poolSize;
+        [Inject(DependencyResolvePrinciple.CREATE_NEW_INSTANCE)]
+        private PoolSystem _pool;
+        
+        [Inject(DependencyResolvePrinciple.FROM_PREFAB, "Bullet")]
+        private GameObject _bulletPrefab;
+        
+        [Inject(DependencyResolvePrinciple.FROM_INACTIVE_GAME_OBJECT, objectName: "BulletPoolHiddenContainer")]
+        private GameObject _hiddenContainer;
 
-        [SerializeField] private DeathObserver _deathObserver;
+        [Inject(DependencyResolvePrinciple.FROM_CASHED_INSTANCE)]
+        private DeathObserver _deathObserver;
         
         private readonly HashSet<Bullet> _activeBullets = new();
-        
-        private void Awake()
-        {
-            // TODO: Change to a constructor method.
-            // Я понимаю, что не следуют исплользовать Awake в задании, но решил такую реализацию сделать установки зависимостей
-            IGameElement.Register(this);
-        }
-        
+        private readonly int _poolSize = 50;
+
+     
         public Bullet GetBullet()
         {
             if (!_pool.HasObject())
@@ -52,14 +54,13 @@ namespace Bullets
 
         void IGameReadyElement.Ready()
         {
-            _pool.CreatePool(_bulletPrefab, _poolSize);
+            _pool.Construct(_bulletPrefab, _poolSize, _hiddenContainer);
+            _pool.CreatePool();
         }
         
         void IGameFinishElement.Finish()
         {
             IGameElement.Unregister(this);
-
-            Destroy(gameObject);
         }
     }
 }

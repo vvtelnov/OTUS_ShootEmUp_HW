@@ -1,12 +1,21 @@
+using GameSystem.DependencySystem.DI;
 using Level;
 using UnityEngine;
 
 namespace Bullets
 {
-    public class DeathObserver : MonoBehaviour
+    [InjectionNeeded]
+    public class DeathObserver
     {
-        [SerializeField] private LevelBounds _bounds;
-        [SerializeField] private StatePoolInteractor _statePoolInteractor;
+        [Inject]
+        private LevelBounds _bounds;
+        private StatePoolInteractor _statePoolInteractor;
+
+        [Inject(DependencyResolvePrinciple.FROM_CASHED_INSTANCE)]
+        public void Construct(StatePoolInteractor statePoolInteractor)
+        {
+            _statePoolInteractor = statePoolInteractor;
+        }
         
         public void SubscribeObserver(Bullet bullet)
         {

@@ -1,42 +1,52 @@
 using System.Collections;
-using GameSystem;
+using GameSystem.DependencySystem.DI;
+using GameSystem.GameContext;
 using Pool;
 using UnityEngine;
 
 namespace Enemy.Spawn
 {
-    public sealed class SpawnInitializer : MonoBehaviour, 
-        IGameStartElement, IGameFinishElement,
+    // Оставил Монобехом ради корутины
+    [InjectionNeeded]
+    public sealed class EnemyLifeCycle : MonoBehaviour, 
+        IGameReadyElement, IGameStartElement, IGameFinishElement,
         IGamePauseElement, IGameResumeElement
     {
-        [SerializeField] private GameObject _enemyPrefab;
-        [SerializeField] private int _poolSize;
-        [SerializeField] private PoolSystem _pool;
+        [Inject(DependencyResolvePrinciple.FROM_PREFAB, "Enemy")]
+        private GameObject _enemyPrefab;
         
-        [SerializeField] private EnemySpawner enemyEnemySpawner;
-        [SerializeField] private int _timeInterval;
+        [Inject(DependencyResolvePrinciple.CREATE_NEW_INSTANCE)]
+        private PoolSystem _pool;
+
+        [Inject(DependencyResolvePrinciple.FROM_INACTIVE_GAME_OBJECT, objectName: "EnemyPoolHiddenContainer")]
+        private GameObject _hiddenContainer; 
+        
+        [Inject(DependencyResolvePrinciple.FROM_CASHED_INSTANCE)]
+        private EnemySpawner _enemySpawner;
+        
+        [SerializeField] private int _timeInterval = 1;
+        [SerializeField] private int _poolSize = 7;
 
         private Coroutine _spawnCoroutine;
 
         private bool _isPaused;
-        
-        private void Awake()
-        {
-            // TODO: Change to a constructor method.
-            // Я понимаю, что не следуют исплользовать Awake в задании, но решил такую реализацию сделать установки зависимостей
-            IGameElement.Register(this);
-        }
 
+        
         public void Remove(GameObject enemy)
         {
             ReleaseToPool(enemy);
             
             TryToStartCoroutine();
-        }        
-        
+        }
+
+        void IGameReadyElement.Ready()
+        {
+            _enemySpawner.Construct(this);
+            CreatePool();
+        }
+    
         void IGameStartElement.OnStart()
         {
-            CreatePool();
             TryToStartCoroutine();
         }
         
@@ -80,7 +90,7 @@ namespace Enemy.Spawn
                 if (rawEnemy is null)
                     break;
             
-                enemyEnemySpawner.Spawn(rawEnemy);
+                _enemySpawner.Spawn(rawEnemy);
             }
             
             _spawnCoroutine = null;
@@ -98,7 +108,8 @@ namespace Enemy.Spawn
 
         private void CreatePool()
         {
-            _pool.CreatePool(_enemyPrefab, _poolSize);
+            _pool.Construct(_enemyPrefab, _poolSize, _hiddenContainer);
+            _pool.CreatePool();
         }
     }
 }

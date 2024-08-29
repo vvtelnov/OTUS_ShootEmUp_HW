@@ -1,24 +1,16 @@
 using System;
-using GameSystem;
+using GameSystem.GameContext;
 using UnityEngine;
 
 namespace Input
 {
-    public sealed class InputHandler : MonoBehaviour, 
-        IUpdateElement, IUpdateInPauseElement,
+    public sealed class InputHandler : IUpdateElement, IUpdateInPauseElement,
         IGameFinishElement
     {
         public event Action OnSpacePressed;
         public event Action OnLeftArrowPressed;
         public event Action OnRightArrowPressed;
         public event Action OnEscapePressed;
-
-        private void Awake()
-        {
-            // TODO: Change to a constructor method.
-            // Я понимаю, что не следуют исплользовать Awake в задании, но решил такую реализацию сделать установки зависимостей
-            IGameElement.Register(this);
-        }
 
         void IUpdateElement.UpdateElement(float _)
         {
@@ -44,8 +36,6 @@ namespace Input
         void IGameFinishElement.Finish()
         {
             IGameElement.Unregister(this);
-
-            Destroy(gameObject);
         }
     }
 }

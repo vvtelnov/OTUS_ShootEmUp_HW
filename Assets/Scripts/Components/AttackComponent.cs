@@ -1,10 +1,11 @@
 using Bullets;
-using Level;
+using GameSystem.DependencySystem.DI;
 using UnityEngine;
 
 namespace Components
 {
-    public class AttackComponent : MonoBehaviour
+    [InjectionNeeded]
+    public class AttackComponent
     {
         public Vector2 Position
         {
@@ -16,22 +17,27 @@ namespace Components
             get { return _firePoint.rotation; }
         }
 
-        [SerializeField] private Transform _firePoint;
-        [SerializeField] private StatePoolInteractor _statePoolInteractor;
-        [SerializeField] private BulletConfig _bulletConfig;
+        [Inject(DependencyResolvePrinciple.FROM_CASHED_INSTANCE)]
+        private StatePoolInteractor _statePoolInteractor;
+        
+        private BulletConfig _bulletConfig;
+        private Transform _firePoint;
 
-        [SerializeField] private LevelBounds _bounds;
+        
+        public void Construct(BulletConfig bulletConfig, Transform firePoint, 
+            StatePoolInteractor statePoolInteractor = null)
+        {
+            _bulletConfig = bulletConfig;
+            _firePoint = firePoint;
+
+            if (statePoolInteractor is not null)
+                _statePoolInteractor = statePoolInteractor;
+        }
 
         public void SetBulletSpawner(StatePoolInteractor statePoolInteractor)
         {
             _statePoolInteractor = statePoolInteractor;
         }
-
-        public void SetLevelBounds(LevelBounds bounds)
-        {
-            _bounds = bounds;
-        }
-        
 
         public void FlyBullet(Vector2 attackDirection)
         {
@@ -48,7 +54,6 @@ namespace Components
             bullet.Damage = _bulletConfig.Damage;
             bullet.IsPlayer = _bulletConfig.IsPlayer;
             bullet.SetVelocity(direction * _bulletConfig.Speed);
-            bullet.SetLevelBounds(_bounds);
         }
     }
 }

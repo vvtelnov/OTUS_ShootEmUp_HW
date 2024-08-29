@@ -1,11 +1,11 @@
 using System;
-using GameSystem;
+using GameSystem.GameContext;
 using UnityEngine;
 
 namespace Level
 {
     public sealed class LevelBackground : MonoBehaviour,
-        IGameInitElement, IFixedUpdateElement,
+        IGameReadyElement, IFixedUpdateElement,
         IGameFinishElement
     {
         private float _startPositionY;
@@ -22,15 +22,8 @@ namespace Level
 
         [SerializeField]
         private InitParams initParams;
-        
-        private void Awake()
-        {
-            // TODO: Change to a constructor method.
-            // Я понимаю, что не следуют исплользовать Awake в задании, но решил такую реализацию сделать установки зависимостей
-            IGameElement.Register(this);
-        }
 
-        void IGameInitElement.Init()
+        void IGameReadyElement.Ready()
         {
             _startPositionY = initParams.StartPositionY;
             _endPositionY = initParams.EndPositionY;
