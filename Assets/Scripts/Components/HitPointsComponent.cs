@@ -3,14 +3,16 @@ using UnityEngine;
 
 namespace Components
 {
-    public sealed class HitPointsComponent : MonoBehaviour
+    public sealed class HitPointsComponent
     {
         public event Action<GameObject> HpEmpty;
 
-        [SerializeField] private int _hitPoints;
+        private GameObject _thisGameObject;
+        private int _hitPoints;
 
-        public void SetHitPoints(int hp)
+        public void Construct(GameObject thisGameObject ,int hp)
         {
+            _thisGameObject = thisGameObject;
             _hitPoints = hp;
         }
 
@@ -19,7 +21,7 @@ namespace Components
             _hitPoints -= damage;
             if (_hitPoints <= 0)
             {
-                HpEmpty?.Invoke(gameObject);
+                HpEmpty?.Invoke(_thisGameObject);
             }
         }
     }

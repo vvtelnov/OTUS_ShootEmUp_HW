@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace Level
 {
+    // Монобех, что бы задавать границы карты через инспектор.
     public sealed class LevelBounds : MonoBehaviour
     {
         [SerializeField]

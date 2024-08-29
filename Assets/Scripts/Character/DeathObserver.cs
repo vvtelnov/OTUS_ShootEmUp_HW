@@ -1,24 +1,25 @@
 using Components;
-using GameSystem;
+using GameSystem.DependencySystem.DI;
+using GameSystem.GameContext;
 using GameSystem.GameManager;
 using UnityEngine;
 
 namespace Character
 {
-    public class DeathObserver : MonoBehaviour,
-        IGameInitElement, IGameFinishElement
+    [InjectionNeeded]
+    public class DeathObserver : IGameStartElement, IGameFinishElement
     {
-        [SerializeField] private GameManager _gameManager;
-        [SerializeField] private HitPointsComponent _hitPointsComponent;
+        [Inject(DependencyResolvePrinciple.FROM_CASHED_INSTANCE)]
+        private GameManager _gameManager;
+        
+        private MonoHitPointsComponent _hitPointsComponent;
 
-        private void Start()
+        public void Construct(MonoHitPointsComponent hpComponent)
         {
-            // TODO: Change to a constructor method.
-            // Я понимаю, что не следуют исплользовать Awake в задании, но решил такую реализацию сделать установки зависимостей
-            IGameElement.Register(this);
+            _hitPointsComponent = hpComponent;
         }
         
-        void IGameInitElement.Init()
+        void IGameStartElement.OnStart()
         {
             _hitPointsComponent.HpEmpty += OnCharacterDeath;
         }
@@ -28,9 +29,11 @@ namespace Character
             _hitPointsComponent.HpEmpty -= OnCharacterDeath;
             
             IGameElement.Unregister(this);
-            Destroy(gameObject);
         }
 
-        private void OnCharacterDeath(GameObject character) => _gameManager.FinishGame();
+        private void OnCharacterDeath(GameObject character)
+        {
+            _gameManager.FinishGame();
+        }
     }
 } 

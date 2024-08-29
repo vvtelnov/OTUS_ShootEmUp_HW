@@ -1,10 +1,18 @@
-using UnityEngine;
+using GameSystem.DependencySystem.DI;
+using GameSystem.GameContext;
 
 namespace GameSystem.GameManager
 {
-    public sealed class GameManager : MonoBehaviour
+    [InjectionNeeded]
+    public sealed class GameManager
     {
-        [SerializeField] private GameContext _gameContext;
+        private GameStateContext _gameContext;
+
+        [Inject]
+        public void Constructor(GameStateContext gameContext)
+        {
+            _gameContext = gameContext;
+        }
 
         public void FinishGame()
         {

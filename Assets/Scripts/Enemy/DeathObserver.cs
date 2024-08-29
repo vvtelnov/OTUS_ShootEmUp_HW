@@ -5,16 +5,16 @@ using UnityEngine;
 
 namespace Enemy
 {
-    public class DeathObserver : MonoBehaviour
+    public class DeathObserver
     {
-        private SpawnInitializer _spawnInitializer;
-        private HitPointsComponent _hpComponent;
+        private EnemyLifeCycle _enemyLifeCycle;
+        private MonoHitPointsComponent _hpComponent;
         private EnemyAttackAgent _attackAgent;
-
-        public void AddObserver(HitPointsComponent hpComponent, SpawnInitializer spawnInitializer, EnemyAttackAgent attackAgent)
+        
+        public void AddObserver(MonoHitPointsComponent hpComponent, EnemyLifeCycle enemyLifeCycle, EnemyAttackAgent attackAgent)
         {
             _hpComponent = hpComponent;
-            _spawnInitializer = spawnInitializer;
+            _enemyLifeCycle = enemyLifeCycle;
             _attackAgent = attackAgent;
             
             _hpComponent.HpEmpty += OnDestroyed;
@@ -22,7 +22,7 @@ namespace Enemy
 
         private void OnDestroyed(GameObject enemy)
         {
-            _spawnInitializer.Remove(enemy);
+            _enemyLifeCycle.Remove(enemy);
             _attackAgent.Destruct();
             
             _hpComponent.HpEmpty -= OnDestroyed;

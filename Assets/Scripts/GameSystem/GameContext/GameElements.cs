@@ -1,17 +1,10 @@
 using System;
-using UnityEngine;
 
-namespace GameSystem
+namespace GameSystem.GameContext
 {
     public interface IGameElement
     {
-        public static event Action<IGameElement> OnRegister;
         public static event Action<IGameElement> OnUnregister;
-
-        public static void Register(IGameElement element)
-        {
-            OnRegister?.Invoke(element);
-        }        
         
         public static void Unregister(IGameElement element)
         {
@@ -19,17 +12,8 @@ namespace GameSystem
         }
     }
 
-    public interface IGameInitElement : IGameElement
-    {
-        // TODO: Remove comments.
-        // Пусть это будет замена Awake
-        void Init();
-    }
-    
     public interface IGameReadyElement : IGameElement
     {
-        // TODO: Remove comments.
-        // Пусть это будет замена Start
         void Ready();
     }
 

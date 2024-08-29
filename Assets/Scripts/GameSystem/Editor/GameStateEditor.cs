@@ -1,9 +1,10 @@
+using GameSystem.GameContext;
 using UnityEditor;
 using UnityEngine;
 
 namespace GameSystem.Editor
 {
-    [CustomEditor(typeof(GameContext))]
+    [CustomEditor(typeof(GameStateContext))]
     public class GameStateEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
@@ -15,7 +16,7 @@ namespace GameSystem.Editor
             EditorGUILayout.Space ();
 
 
-            GameContext gameContext = (GameContext)target;
+            GameStateContext gameContext = (GameStateContext)target;
             
             if (GUILayout.Button("Initialize game"))
             {
@@ -40,7 +41,7 @@ namespace GameSystem.Editor
             
             if (GUILayout.Button("Resume game"))
             {
-                gameContext.ResumeGame();
+                gameContext.UnpauseGame();
             }            
 
             EditorGUILayout.Space ();

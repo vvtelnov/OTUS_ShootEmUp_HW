@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using GameSystem.GameContext;
 using UnityEngine;
 
 namespace Utils
@@ -46,6 +48,50 @@ namespace Utils
 #if UNITY_EDITOR
             Debug.Log($"<color=#DADBE2>----> {msg} <----</color>");
 #endif
+        }
+
+        public static void Debug_PrintAllGameElements(
+            List<IGameElement> gameElements,
+            List<IUpdateElement> updateElements,
+            List<IUpdateInPauseElement> updateInPauseElements,
+            List<IFixedUpdateElement> fixedUpdateElements,
+            List<ILateUpdateElement> lateUpdateElements
+        )
+        {
+            PrintYellow(new string('=', 20));
+            PrintYellow(new string('=', 20));
+           
+            foreach (var i in gameElements)
+            {
+                Debug.Log($"[DEBUG] GameElements: {i}");
+            } 
+            foreach (var i in updateElements)
+            {
+                Debug.Log($"[DEBUG] updateElements: {i}");
+            } 
+            foreach (var i in updateInPauseElements)
+            {
+                Debug.Log($"[DEBUG] UpdateInPauseElements: {i}");
+            } 
+            foreach (var i in fixedUpdateElements)
+            {
+                Debug.Log($"[DEBUG] FixedUpdateElements: {i}");
+            } 
+            foreach (var i in lateUpdateElements)
+            {
+                Debug.Log($"[DEBUG] LateUpdateElements: {i}");
+            } 
+            
+            Debug.Log(new string('-', 20));
+            Debug.Log($"[DEBUG] GameElements Count: {gameElements.Count}");
+            Debug.Log($"[DEBUG] updateElements Count: {updateElements.Count}");
+            Debug.Log($"[DEBUG] UpdateInPauseElements Count: {updateInPauseElements.Count}");
+            Debug.Log($"[DEBUG] FixedUpdateElements Count: {fixedUpdateElements.Count}");
+            Debug.Log($"[DEBUG] LateUpdateElements Count: {lateUpdateElements.Count}");
+            Debug.Log(new string('-', 20));
+            
+            PrintYellow(new string('=', 20));
+            PrintYellow(new string('=', 20));
         }
     }
 }

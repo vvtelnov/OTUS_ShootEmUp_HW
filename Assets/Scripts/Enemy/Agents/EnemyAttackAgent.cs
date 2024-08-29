@@ -1,37 +1,36 @@
 using Components;
-using GameSystem;
+using GameSystem.DependencySystem.DI;
+using GameSystem.GameContext;
 using UnityEngine;
 
 namespace Enemy.Agents
 {
-    public sealed class EnemyAttackAgent : MonoBehaviour, 
-        IGameFinishElement, IFixedUpdateElement
+    [InjectionNeeded]
+    public sealed class EnemyAttackAgent : IGameFinishElement, IFixedUpdateElement
     {
-        [SerializeField] private AttackComponent _attackComponent;
-        [SerializeField] private EnemyMoveAgent _moveAgent;
-        [SerializeField] private float _countdown = 3;
-        [SerializeField] private float _currentTime = 3;
-        [SerializeField] private GameObject _target;
-        [SerializeField] private bool _isAutoAttackEnable;
+        private AttackComponent _attackComponent;
+        private MonoMoveComponent _moveAgent;
+        private GameObject _target;
         
-        private void Awake()
+        private bool _isAutoAttackEnable;
+        private float _countdown = 3;
+        private float _currentTime = 3;
+        
+        public void Construct(AttackComponent attackComponent,
+            MonoMoveComponent moveAgent)
         {
-            // TODO: Change to a constructor method.
-            // Я понимаю, что не следуют исплользовать Awake в задании, но решил такую реализацию сделать установки зависимостей
-            IGameElement.Register(this);
+            _attackComponent = attackComponent;
+            _moveAgent = moveAgent;
+            
+            _currentTime = _countdown;
+
+            DisableAutoAttack();
+            _moveAgent.OnDestinationReached += EnableAutoAttack;
         }
 
         public void SetTarget(GameObject target)
         {
             _target = target;
-        }
-
-        public void Construct()
-        {
-            _currentTime = _countdown;
-
-            DisableAutoAttack();
-            _moveAgent.OnDestinationReached += EnableAutoAttack;
         }
 
         public void Destruct()
@@ -45,7 +44,6 @@ namespace Enemy.Agents
             Destruct();
             
             IGameElement.Unregister(this);
-            Destroy(gameObject);
         }
 
         void IFixedUpdateElement.FixedUpdateElement(float fixedDeltaTime)

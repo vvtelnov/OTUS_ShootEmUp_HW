@@ -1,11 +1,13 @@
 using System;
 using Components;
-using GameSystem;
+using GameSystem.DependencySystem.DI;
+using GameSystem.GameContext;
 using Level;
 using UnityEngine;
 
 namespace Bullets
 {
+    [InjectionNeeded]
     public sealed class Bullet : MonoBehaviour, 
         IFixedUpdateElement,
         IGamePauseElement, IGameResumeElement,
@@ -17,15 +19,6 @@ namespace Bullets
         [NonSerialized] public bool IsPlayer;
         [NonSerialized] public int Damage;
 
-        [SerializeField] private Vector2 _savedVelocityForPauseTime;
-
-        private void Awake()
-        {
-            // TODO: Change to a constructor method.
-            // Я понимаю, что не следуют исплользовать Awake в задании, но решил такую реализацию сделать установки зависимостей
-            IGameElement.Register(this);
-        }
-
         public Vector2 Position
         {
             get => transform.position;
@@ -36,8 +29,12 @@ namespace Bullets
 
         [SerializeField] private SpriteRenderer _spriteRenderer;
 
+        [Inject]
         [SerializeField] private LevelBounds _bounds;
+        
+        private Vector2 _savedVelocityForPauseTime;
 
+        
         public void SetVelocity(Vector2 velocity)
         {
             _rigidbody2D.velocity = velocity;
@@ -51,11 +48,6 @@ namespace Bullets
         public void SetColor(Color color)
         {
             _spriteRenderer.color = color;
-        }
-
-        public void SetLevelBounds(LevelBounds bounds)
-        {
-            _bounds = bounds;
         }
         
         void IFixedUpdateElement.FixedUpdateElement(float _)
@@ -92,13 +84,13 @@ namespace Bullets
         
         private void DealDamage(GameObject target)
         {
-            if (!target.TryGetComponent(out TeamComponent team))
+            if (!target.TryGetComponent(out MonoTeamComponent team))
                 return;
 
             if (IsPlayer == team.IsPlayer)
                 return;
             
-            if (target.TryGetComponent(out HitPointsComponent hitPoints))
+            if (target.TryGetComponent(out MonoHitPointsComponent hitPoints))
                 hitPoints.TakeDamage(Damage);
         }
     }
