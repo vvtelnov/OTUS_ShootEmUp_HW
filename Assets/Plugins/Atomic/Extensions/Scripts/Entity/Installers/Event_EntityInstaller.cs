@@ -4,13 +4,12 @@ using Atomic.Elements;
 using Atomic.Entities;
 using UnityEngine;
 using UnityEngine.Scripting.APIUpdating;
-using Event = Atomic.Elements.Event;
 
 namespace Atomic.Extensions
 {
     [MovedFrom(true, null, null, "EventEntityInstaller")] 
     [Serializable]
-    public sealed class Event_EntityInstaller : ValueEntityInstaller<Event>
+    public sealed class Event_EntityInstaller : ValueEntityInstaller<BaseEvent>
     {
         [SerializeReference]
         private IEntityActionAsset[] actions = default;

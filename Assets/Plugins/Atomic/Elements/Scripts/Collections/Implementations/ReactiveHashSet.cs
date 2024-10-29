@@ -132,24 +132,24 @@ namespace Atomic.Elements
             this.set.CopyTo(array);
         }
 
-        public void ReplaceWith(T item)
+        public void ReplaceTo(T other)
         {
             this.set.Clear();
-            this.set.Add(item);
+            this.set.Add(other);
             this.OnStateChanged?.Invoke();
         }
 
-        public void ReplaceWith(params T[] items)
+        public void ReplaceTo(params T[] other)
         {
             this.set.Clear();
-            this.set.UnionWith(items);
+            this.set.UnionWith(other);
             this.OnStateChanged?.Invoke();
         }
 
-        public void ReplaceWith(IEnumerable<T> items)
+        public void ReplaceTo(IEnumerable<T> other)
         {
             this.set.Clear();
-            this.set.UnionWith(items);
+            this.set.UnionWith(other);
             this.OnStateChanged?.Invoke();
         }
 

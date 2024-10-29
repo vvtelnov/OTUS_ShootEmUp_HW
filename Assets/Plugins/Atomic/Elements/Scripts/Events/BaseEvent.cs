@@ -13,17 +13,17 @@ namespace Atomic.Elements
 #endif
 
     [Serializable]
-    public class Event : IEvent, IDisposable
+    public class BaseEvent : IEvent, IDisposable
     {
-        public event System.Action OnEvent;
+        public event Action OnEvent;
 
-        public System.Action Subscribe(System.Action action)
+        public Action Subscribe(Action action)
         {
             this.OnEvent += action;
             return action;
         }
 
-        public void Unsubscribe(System.Action action)
+        public void Unsubscribe(Action action)
         {
             this.OnEvent -= action;
         }
@@ -47,17 +47,17 @@ namespace Atomic.Elements
 #endif
 
     [Serializable]
-    public class Event<T> : IEvent<T>, IDisposable
+    public class BaseEvent<T> : IEvent<T>, IDisposable
     {
-        public event System.Action<T> OnEvent;
+        public event Action<T> OnEvent;
 
-        public System.Action<T> Subscribe(System.Action<T> action)
+        public Action<T> Subscribe(Action<T> action)
         {
             this.OnEvent += action;
             return action;
         }
 
-        public void Unsubscribe(System.Action<T> action)
+        public void Unsubscribe(Action<T> action)
         {
             this.OnEvent -= action;
         }
@@ -81,17 +81,17 @@ namespace Atomic.Elements
 #endif
 
     [Serializable]
-    public class Event<T1, T2> : IEvent<T1, T2>, IDisposable
+    public class BaseEvent<T1, T2> : IEvent<T1, T2>, IDisposable
     {
-        public event System.Action<T1, T2> OnEvent;
+        public event Action<T1, T2> OnEvent;
 
-        public System.Action<T1, T2> Subscribe(System.Action<T1, T2> action)
+        public Action<T1, T2> Subscribe(Action<T1, T2> action)
         {
             this.OnEvent += action;
             return action;
         }
 
-        public void Unsubscribe(System.Action<T1, T2> action)
+        public void Unsubscribe(Action<T1, T2> action)
         {
             this.OnEvent -= action;
         }
@@ -115,17 +115,17 @@ namespace Atomic.Elements
 #endif
     
     [Serializable]
-    public class Event<T1, T2, T3> : IEvent<T1, T2, T3>, IDisposable
+    public class BaseEvent<T1, T2, T3> : IEvent<T1, T2, T3>, IDisposable
     {
-        public event System.Action<T1, T2, T3> OnEvent;
+        public event Action<T1, T2, T3> OnEvent;
 
-        public System.Action<T1, T2, T3> Subscribe(System.Action<T1, T2, T3> action)
+        public Action<T1, T2, T3> Subscribe(Action<T1, T2, T3> action)
         {
             this.OnEvent += action;
             return action;
         }
 
-        public void Unsubscribe(System.Action<T1, T2, T3> action)
+        public void Unsubscribe(Action<T1, T2, T3> action)
         {
             this.OnEvent -= action;
         }

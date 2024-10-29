@@ -7,13 +7,12 @@ namespace Atomic.Elements
         event StateChangedHandler OnStateChanged;
         event AddItemHandler<T> OnItemAdded;
         event RemoveItemHandler<T> OnItemRemoved;
-        event ClearHandler OnCleared;
 
         void CopyTo(T[] array);
 
-        void ReplaceWith(T item);
-        void ReplaceWith(params T[] items);
-        void ReplaceWith(IEnumerable<T> items);
+        void ReplaceTo(T other);
+        void ReplaceTo(params T[] other);
+        void ReplaceTo(IEnumerable<T> other);
         
         bool IsEmpty();
         bool IsNotEmpty();

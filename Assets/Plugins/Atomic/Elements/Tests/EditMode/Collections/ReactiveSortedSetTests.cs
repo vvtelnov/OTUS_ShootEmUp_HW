@@ -279,7 +279,7 @@ namespace Atomic.Elements
             set.OnStateChanged += () => stateChanged = true;
 
             //Act:
-            set.ReplaceWith("Petya", "Ivan", "John");
+            set.ReplaceTo("Petya", "Ivan", "John");
 
             //Assert:
             Assert.IsTrue(stateChanged);
@@ -304,7 +304,7 @@ namespace Atomic.Elements
             set.OnStateChanged += () => stateChanged = true;
 
             //Act:
-            set.ReplaceWith("Petya");
+            set.ReplaceTo("Petya");
 
             //Assert:
             Assert.IsTrue(stateChanged);

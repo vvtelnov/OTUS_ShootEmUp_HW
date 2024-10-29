@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Atomic.Extensions
 {
     [Serializable]
-    public sealed class EntityEvent_EntityInstaller : ValueEntityInstaller<Event<IEntity>>
+    public sealed class EntityEvent_EntityInstaller : ValueEntityInstaller<BaseEvent<IEntity>>
     {
         [Header("Actions")]
         [SerializeReference]

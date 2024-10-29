@@ -1,13 +1,12 @@
+using System;
+
 namespace Atomic.Elements
 {
     public interface IPausable
     {
-        event System.Action OnPaused;
-        event System.Action OnResumed;
+        event Action OnPaused;
 
         bool IsPaused();
-
         bool Pause();
-        bool Resume();
     }
 }

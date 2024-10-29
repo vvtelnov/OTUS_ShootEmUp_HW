@@ -9,7 +9,7 @@ namespace Atomic.Elements
     /// Represents a function object.
     
     [Serializable]
-    public class ProxyFunction<T> : IFunction<T>
+    public class BaseFunction<T> : IFunction<T>
     {
         private Func<T> func;
 
@@ -21,18 +21,18 @@ namespace Atomic.Elements
             get { return this.func != null ? this.func.Invoke() : default; }
         }
 
-        public ProxyFunction()
+        public BaseFunction()
         {
         }
 
-        public ProxyFunction(Func<T> func)
+        public BaseFunction(Func<T> func)
         {
             this.func = func;
         }
         
-        public static implicit operator ProxyFunction<T>(Func<T> value)
+        public static implicit operator BaseFunction<T>(Func<T> value)
         {
-            return new ProxyFunction<T>(value);
+            return new BaseFunction<T>(value);
         }
         
         public void Compose(Func<T> func)

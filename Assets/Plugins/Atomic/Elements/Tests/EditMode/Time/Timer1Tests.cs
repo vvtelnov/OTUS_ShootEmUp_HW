@@ -3,7 +3,7 @@ using NUnit.Framework;
 namespace Atomic.Elements
 {
     [TestFixture]
-    public sealed class TimerTTests
+    public sealed class Timer1Tests
     {
         [Test]
         public void Instantiate()
@@ -47,6 +47,27 @@ namespace Atomic.Elements
             //Act:
             timer.OnStarted += v => wasEvent = v;
             timer.Start(3, value);
+
+            //Assert:
+            Assert.AreEqual(3, timer.GetCurrentTime());
+            Assert.AreEqual(value, wasEvent);
+            Assert.IsTrue(timer.IsPlaying());
+            Assert.AreEqual(value, timer.Value);
+        }
+        
+        [Test]
+        public void Play()
+        {
+            //Arrange:
+            Timer<object> timer = new Timer<object>(5);
+            object value = new object();
+            object wasEvent = null;
+            timer.OnStarted += v => wasEvent = v;
+
+            //Act:
+            timer.Value = value;
+            timer.CurrentTime = 3;
+            timer.Play();
 
             //Assert:
             Assert.AreEqual(3, timer.GetCurrentTime());

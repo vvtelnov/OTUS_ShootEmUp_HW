@@ -6,21 +6,21 @@ namespace Atomic.Elements
     public static partial class Extensions
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ProxyFunction<R> AsFunction<R>(this Func<R> func)
+        public static BaseFunction<R> AsFunction<R>(this Func<R> func)
         {
-            return new ProxyFunction<R>(func);
+            return new BaseFunction<R>(func);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ProxyFunction<R> AsFunction<T, R>(this T it, Func<T, R> func)
+        public static BaseFunction<R> AsFunction<T, R>(this T it, Func<T, R> func)
         {
-            return new ProxyFunction<R>(() => func.Invoke(it));
+            return new BaseFunction<R>(() => func.Invoke(it));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ProxyFunction<bool> AsNot(this IValue<bool> it)
+        public static BaseFunction<bool> AsNot(this IValue<bool> it)
         {
-            return new ProxyFunction<bool>(() => !it.Value);
+            return new BaseFunction<bool>(() => !it.Value);
         }
     }
 }

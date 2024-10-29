@@ -122,6 +122,7 @@ namespace Atomic.Entities
         }
 
 #if ODIN_INSPECTOR
+        [Searchable]
         [FoldoutGroup("Debug")]
         [ShowInInspector, ReadOnly]
 #endif

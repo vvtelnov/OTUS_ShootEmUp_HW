@@ -8,7 +8,7 @@ using Sirenix.OdinInspector;
 namespace Atomic.Elements
 {
     [Serializable]
-    public class Stopwatch : IPlayable, ITimeable, ITickable, IPausable
+    public class Stopwatch : IStartable, ITimeable, ITickable, IPausable
     {
         public enum State
         {
@@ -17,13 +17,13 @@ namespace Atomic.Elements
             PAUSED = 2
         }
 
-        public event System.Action OnStarted;
-        public event System.Action OnStopped;
-        public event System.Action OnPaused;
-        public event System.Action OnResumed;
+        public event Action OnStarted;
+        public event Action OnStopped;
+        public event Action OnPaused;
+        public event Action OnResumed;
         
-        public event System.Action<float> OnCurrentTimeChanged;
-        public event System.Action<State> OnStateChanged;
+        public event Action<float> OnCurrentTimeChanged;
+        public event Action<State> OnStateChanged;
 
 #if ODIN_INSPECTOR
         [ShowInInspector, ReadOnly, HideInEditorMode]
@@ -63,6 +63,22 @@ namespace Atomic.Elements
             }
 
             this.currentTime = 0;
+            this.currentState = State.PLAYING;
+            this.OnStateChanged?.Invoke(State.PLAYING);
+            this.OnStarted?.Invoke();
+            return true;
+        }
+        
+#if ODIN_INSPECTOR
+        [Button]
+#endif
+        public bool Play()
+        {
+            if (this.currentState is not State.IDLE)
+            {
+                return false;
+            }
+
             this.currentState = State.PLAYING;
             this.OnStateChanged?.Invoke(State.PLAYING);
             this.OnStarted?.Invoke();

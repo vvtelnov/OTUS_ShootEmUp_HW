@@ -8,7 +8,7 @@ using Sirenix.OdinInspector;
 namespace Atomic.Elements
 {
     [Serializable]
-    public class Countdown : IStartable, IPausable, IEndable, IProgressable, ITickable
+    public class Timer<T> : ITimer<T>
     {
         public enum State
         {
@@ -18,17 +18,27 @@ namespace Atomic.Elements
             ENDED = 3
         }
 
-        public event Action OnStarted;
-        public event Action OnStopped;
+        public event Action<T> OnStarted;
+        public event Action<T> OnStopped;
+        public event Action<T> OnEnded;
+
         public event Action OnPaused;
         public event Action OnResumed;
-        public event Action OnEnded;
 
         public event Action<State> OnStateChanged;
 
         public event Action<float> OnCurrentTimeChanged;
         public event Action<float> OnDurationChanged;
         public event Action<float> OnProgressChanged;
+
+#if ODIN_INSPECTOR
+        [ShowInInspector, ReadOnly, HideInEditorMode]
+#endif
+        public T Value
+        {
+            get { return this.currentValue; }
+            set { this.currentValue = value; }
+        }
 
 #if ODIN_INSPECTOR
         [ShowInInspector, ReadOnly, HideInEditorMode]
@@ -88,18 +98,19 @@ namespace Atomic.Elements
 
         private float currentTime;
         private State currentState;
+        private T currentValue;
 
-        public Countdown()
+        public Timer()
         {
         }
 
-        public Countdown(float duration, bool loop = false)
+        public Timer(float duration, bool loop = false)
         {
             this.duration = duration;
             this.loop = loop;
         }
 
-        public State GetCurrentState() => this.currentState; 
+        public State GetCurrentState() => this.currentState;
         public bool IsIdle() => this.currentState == State.IDLE;
         public bool IsPlaying() => this.currentState == State.PLAYING;
         public bool IsPaused() => this.currentState == State.PAUSED;
@@ -107,40 +118,59 @@ namespace Atomic.Elements
 
         public float GetDuration() => this.duration;
         public float GetCurrentTime() => this.currentTime;
+        public T GetCurrentValue() => this.currentValue;
 
 #if ODIN_INSPECTOR
-        [Title("Methods")]
         [Button]
 #endif
-        public void ForceStart()
+        public void ForceStart(T value)
         {
             this.Stop();
-            this.Start();
+            this.Start(value);
         }
 
 #if ODIN_INSPECTOR
         [Button]
 #endif
-        public void ForceStart(float currentTime)
+        public void ForceStart(float currentTime, T value)
         {
             this.Stop();
-            this.Start(currentTime);
+            this.Start(currentTime, value);
         }
 
 #if ODIN_INSPECTOR
         [Button]
 #endif
-        public bool Start()
+        public bool Start(T value)
         {
             if (this.currentState is not (State.IDLE or State.ENDED))
             {
                 return false;
             }
 
-            this.currentTime = this.duration;
+            this.currentValue = value;
+            this.currentTime = 0;
             this.currentState = State.PLAYING;
             this.OnStateChanged?.Invoke(State.PLAYING);
-            this.OnStarted?.Invoke();
+            this.OnStarted?.Invoke(value);
+            return true;
+        }
+
+#if ODIN_INSPECTOR
+        [Button]
+#endif
+        public bool Start(float currentTime, T value)
+        {
+            if (this.currentState is not (State.IDLE or State.ENDED))
+            {
+                return false;
+            }
+
+            this.currentValue = value;
+            this.currentTime = Mathf.Clamp(currentTime, 0, this.duration);
+            this.currentState = State.PLAYING;
+            this.OnStateChanged?.Invoke(State.PLAYING);
+            this.OnStarted?.Invoke(value);
             return true;
         }
         
@@ -156,25 +186,8 @@ namespace Atomic.Elements
 
             this.currentState = State.PLAYING;
             this.OnStateChanged?.Invoke(State.PLAYING);
-            this.OnStarted?.Invoke();
-            return true;
-        }
-
-#if ODIN_INSPECTOR
-        [Button]
-#endif
-        public bool Start(float currentTime)
-        {
-            if (this.currentState is not (State.IDLE or State.ENDED))
-            {
-                return false;
-            }
-
-            this.currentTime = Mathf.Clamp(currentTime, 0, this.duration);
-            this.currentState = State.PLAYING;
-            this.OnStateChanged?.Invoke(State.PLAYING);
-            this.OnStarted?.Invoke();
-            return true;
+            this.OnStarted?.Invoke(this.currentValue);
+            return true; 
         }
 
 #if ODIN_INSPECTOR
@@ -219,10 +232,13 @@ namespace Atomic.Elements
                 return false;
             }
 
+            T value = this.currentValue;
+
+            this.currentValue = default;
             this.currentTime = 0;
             this.currentState = State.IDLE;
             this.OnStateChanged?.Invoke(State.IDLE);
-            this.OnStopped?.Invoke();
+            this.OnStopped?.Invoke(value);
             return true;
         }
 
@@ -236,10 +252,10 @@ namespace Atomic.Elements
                 return;
             }
 
-            this.currentTime = Mathf.Max(0, this.currentTime - deltaTime);
+            this.currentTime = Mathf.Min(this.duration, this.currentTime + deltaTime);
             this.OnCurrentTimeChanged?.Invoke(this.currentTime);
 
-            float progress = 1 - this.currentTime / this.duration;
+            float progress = this.currentTime / this.duration;
             this.OnProgressChanged?.Invoke(progress);
 
             if (progress >= 1)
@@ -250,13 +266,16 @@ namespace Atomic.Elements
 
         private void Complete()
         {
+            T value = this.currentValue;
+            this.currentValue = value;
+
             this.currentState = State.ENDED;
             this.OnStateChanged?.Invoke(State.ENDED);
-            this.OnEnded?.Invoke();
+            this.OnEnded?.Invoke(value);
 
             if (this.loop)
             {
-                this.Start();
+                this.Start(value);
             }
         }
 
@@ -264,7 +283,7 @@ namespace Atomic.Elements
         {
             return this.currentState switch
             {
-                State.PLAYING or State.PAUSED => 1 - this.currentTime / this.duration,
+                State.PLAYING or State.PAUSED => this.currentTime / this.duration,
                 State.ENDED => 1,
                 _ => 0
             };
@@ -276,10 +295,8 @@ namespace Atomic.Elements
         public void SetProgress(float progress)
         {
             progress = Mathf.Clamp01(progress);
-            float remainingTime = this.duration * (1 - progress);
-
-            this.currentTime = remainingTime;
-            this.OnCurrentTimeChanged?.Invoke(remainingTime);
+            this.currentTime = this.duration * progress;
+            this.OnCurrentTimeChanged?.Invoke(this.currentTime);
             this.OnProgressChanged?.Invoke(progress);
         }
 
@@ -290,7 +307,7 @@ namespace Atomic.Elements
         {
             if (duration < 0)
             {
-                throw new Exception($"Duration can't be negative: {duration}!");
+                return;
             }
 
             if (Math.Abs(this.duration - duration) > float.Epsilon)
@@ -307,7 +324,7 @@ namespace Atomic.Elements
         {
             if (time < 0)
             {
-                throw new Exception($"Time can't be negative: {duration}!");
+                return;
             }
 
             float newTime = Mathf.Clamp(time, 0, this.duration);
@@ -318,10 +335,5 @@ namespace Atomic.Elements
                 this.OnProgressChanged?.Invoke(this.GetProgress());
             }
         }
-
-#if ODIN_INSPECTOR
-        [Button]
-#endif
-        public void ResetTime() => this.SetCurrentTime(this.duration);
     }
 }

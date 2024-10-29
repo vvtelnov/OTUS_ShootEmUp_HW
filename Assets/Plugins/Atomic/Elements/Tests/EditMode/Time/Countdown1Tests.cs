@@ -3,7 +3,7 @@ using NUnit.Framework;
 namespace Atomic.Elements
 {
     [TestFixture]
-    public sealed class CountdownTTests
+    public sealed class Countdown1Tests
     {
         [Test]
         public void Instantiate()
@@ -54,6 +54,40 @@ namespace Atomic.Elements
             Assert.IsTrue(countdown.IsPlaying());
             Assert.AreEqual(value, countdown.Value);
         }
+        
+        [Test]
+        public void Play()
+        {
+            //Arrange:
+            Countdown<object> countdown = new Countdown<object>(5);
+            object value = new object();
+
+            Countdown<object>.State stateChanged = default;
+
+            countdown.OnStarted += o => value = o;
+            countdown.OnStateChanged += s => stateChanged = s;
+
+            //Act:
+            countdown.CurrentTime = 2;
+            countdown.Value = value;
+            countdown.Play();
+
+            //Assert:
+            Assert.AreEqual(Countdown<object>.State.PLAYING, stateChanged);
+            Assert.AreEqual(Countdown<object>.State.PLAYING, countdown.GetCurrentState());
+            Assert.AreEqual(2, countdown.GetCurrentTime());
+            Assert.AreEqual(value, countdown.Value);
+            
+            Assert.IsTrue(countdown.IsPlaying());
+            
+            //Act:
+            countdown.Tick(deltaTime: 0.5f);
+            countdown.Tick(deltaTime: 0.5f);
+            countdown.Tick(deltaTime: 0.5f);
+            countdown.Tick(deltaTime: 0.5f);
+
+            Assert.IsTrue(countdown.IsEnded());
+        }
 
         [Test]
         public void WhenGetProgressOfNotStartedThenReturnZero()
@@ -100,7 +134,6 @@ namespace Atomic.Elements
             Assert.AreEqual(0.2f, progress, float.Epsilon);
             Assert.AreEqual(0.2f, countdown.GetProgress(), float.Epsilon);
         }
-
 
         [Test]
         public void WhenStartCountdownFromEndedStateThenWillPlaying()

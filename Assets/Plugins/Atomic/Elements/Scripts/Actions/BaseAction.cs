@@ -11,25 +11,25 @@ namespace Atomic.Elements
 #endif
 
     [Serializable]
-    public class ProxyAction : IAction
+    public class BaseAction : IAction
     {
         private Action action;
 
-        public ProxyAction()
+        public BaseAction()
         {
         }
 
-        public ProxyAction(Action action)
+        public BaseAction(Action action)
         {
             this.action = action;
         }
         
-        public static implicit operator ProxyAction(Action value)
+        public static implicit operator BaseAction(Action value)
         {
-            return new ProxyAction(value);
+            return new BaseAction(value);
         }
 
-        public ProxyAction Compose(Action action)
+        public BaseAction Compose(Action action)
         {
             this.action = action;
             return this;
@@ -50,25 +50,25 @@ namespace Atomic.Elements
 #endif
 
     [Serializable]
-    public class ProxyAction<T> : IAction<T>
+    public class BaseAction<T> : IAction<T>
     {
         private Action<T> action;
 
-        public ProxyAction()
+        public BaseAction()
         {
         }
 
-        public ProxyAction(Action<T> action)
+        public BaseAction(Action<T> action)
         {
             this.action = action;
         }
-        
-        public static implicit operator ProxyAction<T>(Action<T> value)
+
+        public static implicit operator BaseAction<T>(Action<T> value)
         {
-            return new ProxyAction<T>(value);
+            return new BaseAction<T>(value);
         }
         
-        public ProxyAction<T> Compose(Action<T> action)
+        public BaseAction<T> Compose(Action<T> action)
         {
             this.action = action;
             return this;
@@ -89,25 +89,25 @@ namespace Atomic.Elements
 #endif
     
     [Serializable]
-    public class ProxyAction<T1, T2> : IAction<T1, T2>
+    public class BaseAction<T1, T2> : IAction<T1, T2>
     {
         private Action<T1, T2> action;
 
-        public ProxyAction()
+        public BaseAction()
         {
         }
 
-        public ProxyAction(Action<T1, T2> action)
+        public BaseAction(Action<T1, T2> action)
         {
             this.action = action;
         }
         
-        public static implicit operator ProxyAction<T1, T2>(Action<T1, T2> value)
+        public static implicit operator BaseAction<T1, T2>(Action<T1, T2> value)
         {
-            return new ProxyAction<T1, T2>(value);
+            return new BaseAction<T1, T2>(value);
         }
         
-        public ProxyAction<T1, T2> Compose(Action<T1, T2> action)
+        public BaseAction<T1, T2> Compose(Action<T1, T2> action)
         {
             this.action = action;
             return this;
@@ -128,25 +128,25 @@ namespace Atomic.Elements
 #endif
 
     [Serializable]
-    public class ProxyAction<T1, T2, T3> : IAction<T1, T2, T3>
+    public class BaseAction<T1, T2, T3> : IAction<T1, T2, T3>
     {
         private Action<T1, T2, T3> action;
 
-        public ProxyAction()
+        public BaseAction()
         {
         }
 
-        public ProxyAction(Action<T1, T2, T3> action)
+        public BaseAction(Action<T1, T2, T3> action)
         {
             this.action = action;
         }
         
-        public static implicit operator ProxyAction<T1, T2, T3>(Action<T1, T2, T3> value)
+        public static implicit operator BaseAction<T1, T2, T3>(Action<T1, T2, T3> value)
         {
-            return new ProxyAction<T1, T2, T3>(value);
+            return new BaseAction<T1, T2, T3>(value);
         }
         
-        public ProxyAction<T1, T2, T3> Compose(Action<T1, T2, T3> action)
+        public BaseAction<T1, T2, T3> Compose(Action<T1, T2, T3> action)
         {
             this.action = action;
             return this;

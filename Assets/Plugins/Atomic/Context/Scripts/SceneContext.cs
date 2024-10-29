@@ -33,7 +33,7 @@ namespace Atomic.Contexts
         #endregion
 
         #region Install
-        
+
         [SerializeField]
         private bool installOnAwake = true;
 
@@ -57,7 +57,7 @@ namespace Atomic.Contexts
         private UnityEvent onInstalled;
 
         private bool installed;
-        
+
         public void Install()
         {
             this.Install(this.initialParent);
@@ -103,8 +103,14 @@ namespace Atomic.Contexts
         #endregion
 
         #region Unity
-        
-        [Space]
+
+        [Header("Unity Settings")]
+        [SerializeField]
+        private bool dontDestroyOnLoad;
+
+#if ODIN_INSPECTOR
+        [PropertySpace(SpaceBefore = 0, SpaceAfter = 12)]
+#endif
         [SerializeField]
         private bool refreshOnValidate = true;
 
@@ -113,6 +119,11 @@ namespace Atomic.Contexts
             if (this.installOnAwake)
             {
                 this.Install();
+            }
+
+            if (this.dontDestroyOnLoad)
+            {
+                DontDestroyOnLoad(this.gameObject);
             }
         }
 
@@ -363,6 +374,7 @@ namespace Atomic.Contexts
 #if UNITY_EDITOR && ODIN_INSPECTOR
         ///Main
 
+        [PropertySpace(12)]
         [FoldoutGroup("Debug")]
         [ShowInInspector, ReadOnly]
         [HideInEditorMode, LabelText("Name")]
@@ -412,6 +424,7 @@ namespace Atomic.Contexts
             }
         }
 
+        [Searchable]
         [FoldoutGroup("Debug")]
         [LabelText("Values")]
         [ShowInInspector, PropertyOrder(100)]
@@ -475,6 +488,7 @@ namespace Atomic.Contexts
             }
         }
 
+        [Searchable]
         [FoldoutGroup("Debug")]
         [LabelText("Systems")]
         [ShowInInspector, PropertyOrder(100)]

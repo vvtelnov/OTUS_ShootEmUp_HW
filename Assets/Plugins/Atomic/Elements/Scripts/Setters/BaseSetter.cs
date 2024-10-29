@@ -8,7 +8,7 @@ namespace Atomic.Elements
     ///Provides setter interface to a specified source.
 
     [Serializable]
-    public class Setter<T> : ISetter<T>
+    public class BaseSetter<T> : ISetter<T>
     {
         public T Value
         {
@@ -17,11 +17,11 @@ namespace Atomic.Elements
 
         private System.Action<T> action;
 
-        public Setter()
+        public BaseSetter()
         {
         }
 
-        public Setter(System.Action<T> action)
+        public BaseSetter(System.Action<T> action)
         {
             this.action = action;
         }

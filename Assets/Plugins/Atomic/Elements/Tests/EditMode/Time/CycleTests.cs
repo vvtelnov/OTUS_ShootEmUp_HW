@@ -60,6 +60,40 @@ namespace Atomic.Elements
             Assert.IsTrue(cycle.IsPlaying());
         }
         
+        [Test]
+        public void Play()
+        {
+            //Arrange:
+            Cycle cycle = new Cycle(5);
+            bool wasEvent = false;
+            Cycle.State stateChanged = default;
+        
+            cycle.OnStarted += () => wasEvent = true;
+            cycle.OnStateChanged += s => stateChanged = s;
+
+            //Act:
+            cycle.CurrentTime = 2;
+            bool success = cycle.Play();
+
+            //Assert:
+            Assert.IsTrue(success);
+            Assert.AreEqual(Cycle.State.PLAYING, stateChanged);
+            Assert.AreEqual(Cycle.State.PLAYING, cycle.GetCurrentState());
+            Assert.AreEqual(2, cycle.GetCurrentTime());
+            
+            Assert.IsTrue(wasEvent);
+            Assert.IsTrue(cycle.IsPlaying());
+            
+            //Act:
+            cycle.Tick(deltaTime: 0.5f);
+            cycle.Tick(deltaTime: 0.5f);
+            cycle.Tick(deltaTime: 0.5f);
+            cycle.Tick(deltaTime: 0.5f);
+            cycle.Tick(deltaTime: 0.5f);
+            cycle.Tick(deltaTime: 0.5f);
+
+            Assert.AreEqual(0, cycle.CurrentTime, 1e-2);
+        }
         
         [Test]
         public void WhenGetProgressOfNotStartedThenReturnZero()

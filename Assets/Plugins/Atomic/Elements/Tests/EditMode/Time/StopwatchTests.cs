@@ -39,6 +39,32 @@ namespace Atomic.Elements
         }
         
         [Test]
+        public void Play()
+        {
+            //Arrange:
+            Stopwatch stopwatch = new Stopwatch();
+            bool wasEvent = false;
+            Stopwatch.State stateChanged = default;
+
+            stopwatch.OnStarted += () => wasEvent = true;
+            stopwatch.OnStateChanged += s => stateChanged = s;
+
+            //Act:
+            stopwatch.CurrentTime = 4;
+            bool success = stopwatch.Play();
+
+            //Assert:
+            Assert.IsTrue(success);
+            Assert.IsTrue(stopwatch.IsPlaying());
+
+            Assert.AreEqual(Stopwatch.State.PLAYING, stateChanged);
+            Assert.AreEqual(Stopwatch.State.PLAYING, stopwatch.GetCurrentState());
+            Assert.AreEqual(4, stopwatch.GetCurrentTime());
+
+            Assert.IsTrue(wasEvent);
+        }
+        
+        [Test]
         public void WhenTickNotStartedThenNothing()
         {
             //Arrange:

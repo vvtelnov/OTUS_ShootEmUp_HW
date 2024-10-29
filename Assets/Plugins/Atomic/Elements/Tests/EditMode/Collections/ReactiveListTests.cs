@@ -83,7 +83,7 @@ namespace Atomic.Elements
             int updatedIndex = -1;
 
             var list = new ReactiveList<string>("Vasya", "Petya", "Masha");
-            list.OnItemChanged += (i, v) =>
+            list.OnItemUpdated += (i, v) =>
             {
                 updatedIndex = i;
                 updatedItem = v;
@@ -112,7 +112,7 @@ namespace Atomic.Elements
             int updatedIndex = -1;
 
             var list = new ReactiveList<string>("Vasya", "Petya", "Masha");
-            list.OnItemChanged += (i, v) =>
+            list.OnItemUpdated += (i, v) =>
             {
                 updatedIndex = i;
                 updatedItem = v;

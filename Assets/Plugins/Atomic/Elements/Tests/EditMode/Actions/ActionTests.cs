@@ -10,7 +10,7 @@ namespace Atomic.Elements
         {
             //Arrange:
             bool wasAction = false;
-            ProxyAction action = new ProxyAction(() => wasAction = true);
+            BaseAction action = new BaseAction(() => wasAction = true);
             
             //Act:
             action.Invoke();
@@ -24,7 +24,7 @@ namespace Atomic.Elements
         {
             //Arrange:
             bool wasAction = false;
-            ProxyAction action = new ProxyAction();
+            BaseAction action = new BaseAction();
             action.Compose(() => wasAction = true);
             
             //Act:
@@ -43,7 +43,7 @@ namespace Atomic.Elements
         {
             //Arrange:
             string wasAction = string.Empty;
-            ProxyAction<string> action = new ProxyAction<string>(args => wasAction = args);
+            BaseAction<string> action = new BaseAction<string>(args => wasAction = args);
             
             //Act:
             action.Invoke("Vasya");
@@ -58,7 +58,7 @@ namespace Atomic.Elements
             //Arrange:
             string wasAction = string.Empty;
 
-            ProxyAction<string> action = new ProxyAction<string>();
+            BaseAction<string> action = new BaseAction<string>();
             action.Compose(args => wasAction = args);
             
             //Act:
@@ -80,7 +80,7 @@ namespace Atomic.Elements
             string t1 = null;
             int t2 = -1;
             
-            var action = new ProxyAction<string, int>((a1, a2) =>
+            var action = new BaseAction<string, int>((a1, a2) =>
             {
                 t1 = a1;
                 t2 = a2;
@@ -101,7 +101,7 @@ namespace Atomic.Elements
             string t1 = null;
             int t2 = -1;
             
-            var action = new ProxyAction<string, int>();
+            var action = new BaseAction<string, int>();
             action.Compose((a1, a2) =>
             {
                 t1 = a1;
@@ -129,7 +129,7 @@ namespace Atomic.Elements
             int t2 = -1;
             bool t3 = false;
             
-            var action = new ProxyAction<string, int, bool>((a1, a2, a3) =>
+            var action = new BaseAction<string, int, bool>((a1, a2, a3) =>
             {
                 t1 = a1;
                 t2 = a2;
@@ -153,7 +153,7 @@ namespace Atomic.Elements
             int t2 = -1;
             bool t3 = false;
   
-            var action = new ProxyAction<string, int, bool>();
+            var action = new BaseAction<string, int, bool>();
             action.Compose((a1, a2, a3) =>
             {
                 t1 = a1;
