@@ -11,7 +11,7 @@ namespace Atomic.Elements
         private static readonly IEqualityComparer<T> equalityComparer = EqualityComparer.GetDefault<T>();
 
         public event StateChangedHandler OnStateChanged;
-        public event ChangeItemHandler<T> OnItemUpdated;
+        public event ChangeItemHandler<T> OnItemChanged;
         public event InsertItemHandler<T> OnItemInserted;
         public event DeleteItemHandler<T> OnItemDeleted;
         public event ClearHandler OnCleared;
@@ -57,7 +57,7 @@ namespace Atomic.Elements
             
             this.list[index] = value;
             this.OnStateChanged?.Invoke();
-            this.OnItemUpdated?.Invoke(index, value);
+            this.OnItemChanged?.Invoke(index, value);
         }
 
         public void Add(T item)

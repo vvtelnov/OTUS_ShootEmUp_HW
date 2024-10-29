@@ -686,7 +686,6 @@ namespace Atomic.Entities
             }
         }
 
-        [Searchable]
         [FoldoutGroup("Debug")]
         [LabelText("Tags")]
         [ShowInInspector, PropertyOrder(100)]
@@ -759,7 +758,6 @@ namespace Atomic.Entities
             }
         }
 
-        [Searchable]
         [FoldoutGroup("Debug")]
         [LabelText("State")]
         [ShowInInspector, PropertyOrder(100)]
@@ -830,7 +828,6 @@ namespace Atomic.Entities
             }
         }
 
-        [Searchable]
         [FoldoutGroup("Debug")]
         [LabelText("Behaviours")]
         [ShowInInspector, PropertyOrder(100)]

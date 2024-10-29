@@ -1,12 +1,11 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Atomic.Elements
 {
     [Serializable]
-    public class ReactiveArray<T> : IReactiveArray<T>
+    public class ReactiveArray<T>
     {
         private static readonly IEqualityComparer<T> equalityComparer = EqualityComparer.GetDefault<T>();
 
@@ -36,29 +35,13 @@ namespace Atomic.Elements
             }
             set
             {
-                ref T current = ref this.array[index];
-                if (equalityComparer.Equals(current, value))
+                if (!equalityComparer.Equals(this.array[index], value))
                 {
-                    return;
+                    this.array[index] = value;
+                    this.OnStateChanged?.Invoke();
+                    this.OnItemChanged?.Invoke(index, value);
                 }
-
-                current = value;
-                this.OnStateChanged?.Invoke();
-                this.OnItemChanged?.Invoke(index, value);
             }
-        }
-
-        public IEnumerator<T> GetEnumerator()
-        {
-            for (int i = 0, count = this.array.Length; i < count; i++)
-            {
-                yield return this.array[i];
-            }
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
         }
     }
 }

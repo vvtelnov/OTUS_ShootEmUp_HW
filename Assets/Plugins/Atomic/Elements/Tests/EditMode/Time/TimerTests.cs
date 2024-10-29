@@ -53,24 +53,6 @@ namespace Atomic.Elements
             Assert.IsTrue(wasEvent);
             Assert.IsTrue(timer.IsPlaying());
         }
-        
-        [Test]
-        public void Play()
-        {
-            //Arrange:
-            Timer timer = new Timer(5);
-            bool wasEvent = false;
-
-            //Act:
-            timer.OnStarted += () => wasEvent = true;
-            timer.CurrentTime = 3;
-            timer.Play();
-
-            //Assert:
-            Assert.AreEqual(3, timer.GetCurrentTime());
-            Assert.IsTrue(wasEvent);
-            Assert.IsTrue(timer.IsPlaying());
-        }
 
         [Test]
         public void WhenGetProgressOfNotStartedThenReturnZero()

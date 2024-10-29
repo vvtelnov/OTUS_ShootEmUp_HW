@@ -11,7 +11,7 @@ namespace Atomic.Entities
 {
     [AddComponentMenu("Atomic/Entities/Entity Gizmos")]
     [RequireComponent(typeof(SceneEntity))]
-    public class SceneEntityGizmos : MonoBehaviour
+    public sealed class SceneEntityGizmos : MonoBehaviour
     {
         [SerializeField]
         private bool drawGizmos = true;
@@ -24,13 +24,13 @@ namespace Atomic.Entities
 #endif
         [Space]
         [SerializeReference]
-        protected IEntityGizmos[] gizmoses;
+        private IEntityGizmos[] gizmoses;
 
 #if ODIN_INSPECTOR
         [ShowIf(nameof(drawGizmosSelected))]
 #endif
         [SerializeReference]
-        protected IEntityGizmos[] gizmosesSelected;
+        private IEntityGizmos[] gizmosesSelected;
 
         private SceneEntity _sceneEntity;
         

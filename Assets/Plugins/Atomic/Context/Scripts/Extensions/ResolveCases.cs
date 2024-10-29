@@ -31,7 +31,7 @@ namespace Atomic.Contexts
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T ResolveValue<T>(this IContext context, int key)
+        public static T ResolveValue<T>(this IContext context, int key) where T : class
         {
             if (context.TryGetValue(key, out T value))
             {
@@ -44,7 +44,7 @@ namespace Atomic.Contexts
                 
                 if (context == null)
                 {
-                    return default;
+                    return null;
                 }
 
                 value = context.GetValue<T>(key);

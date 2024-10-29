@@ -72,10 +72,6 @@ namespace Atomic.Entities
                 TagsConfig.Item item = items[i];
                 writer.WriteLine(
                     $"        public static bool Has{item.type}Tag(this {ENTITY_CLASS} obj) => obj.HasTag({item.type});");
-
-                writer.WriteLine(
-                    $"        public static bool Not{item.type}Tag(this {ENTITY_CLASS} obj) => !obj.HasTag({item.type});");
-                
                 writer.WriteLine(
                     $"        public static bool Add{item.type}Tag(this {ENTITY_CLASS} obj) => obj.AddTag({item.type});");
                 writer.WriteLine(

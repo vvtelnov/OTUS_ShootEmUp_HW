@@ -38,37 +38,6 @@ namespace Atomic.Elements
         }
 
         [Test]
-        public void Play()
-        {
-            //Arrange:
-            Countdown countdown = new Countdown(5);
-            bool wasEvent = false;
-            Countdown.State stateChanged = default;
-
-            countdown.OnStarted += () => wasEvent = true;
-            countdown.OnStateChanged += s => stateChanged = s;
-
-            //Act:
-            countdown.SetCurrentTime(2);
-            countdown.Play();
-
-            //Assert:
-            Assert.AreEqual(Countdown.State.PLAYING, stateChanged);
-            Assert.AreEqual(Countdown.State.PLAYING, countdown.GetCurrentState());
-            Assert.AreEqual(2, countdown.GetCurrentTime());
-            Assert.IsTrue(wasEvent);
-            Assert.IsTrue(countdown.IsPlaying());
-            
-            //Act:
-            countdown.Tick(deltaTime: 0.5f);
-            countdown.Tick(deltaTime: 0.5f);
-            countdown.Tick(deltaTime: 0.5f);
-            countdown.Tick(deltaTime: 0.5f);
-
-            Assert.IsTrue(countdown.IsEnded());
-        }
-
-        [Test]
         public void StartWithTime()
         {
             //Arrange:

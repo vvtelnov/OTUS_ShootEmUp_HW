@@ -8,7 +8,7 @@ using Sirenix.OdinInspector;
 namespace Atomic.Elements
 {
     [Serializable]
-    public class Cycle : IStartable, IProgressable, ITickable, IPausable
+    public class Cycle : IPlayable, IProgressable, ITickable, IPausable
     {
         public enum State
         {
@@ -17,17 +17,17 @@ namespace Atomic.Elements
             PAUSED = 2
         }
 
-        public event Action OnStarted;
-        public event Action OnStopped;
-        public event Action OnPaused;
-        public event Action OnResumed;
+        public event System.Action OnStarted;
+        public event System.Action OnStopped;
+        public event System.Action OnPaused;
+        public event System.Action OnResumed;
 
-        public event Action OnCycle;
-        public event Action<State> OnStateChanged;
+        public event System.Action OnCycle;
+        public event System.Action<State> OnStateChanged;
 
-        public event Action<float> OnCurrentTimeChanged;
-        public event Action<float> OnProgressChanged;
-        public event Action<float> OnDurationChanged;
+        public event System.Action<float> OnCurrentTimeChanged;
+        public event System.Action<float> OnProgressChanged;
+        public event System.Action<float> OnDurationChanged;
 
 #if ODIN_INSPECTOR
         [ShowInInspector, ReadOnly, HideInEditorMode]
@@ -127,22 +127,6 @@ namespace Atomic.Elements
 #if ODIN_INSPECTOR
         [Button]
 #endif
-        public bool Play()
-        {
-            if (this.currentState is not State.IDLE)
-            {
-                return false;
-            }
-
-            this.currentState = State.PLAYING;
-            this.OnStateChanged?.Invoke(State.PLAYING);
-            this.OnStarted?.Invoke();
-            return true;
-        }
-        
-#if ODIN_INSPECTOR
-        [Button]
-#endif
         public bool Pause()
         {
             if (this.currentState != State.PLAYING)
@@ -213,8 +197,8 @@ namespace Atomic.Elements
 
         private void CompleteCycle()
         {
-            this.SetCurrentTime(this.currentTime - this.duration);
             this.OnCycle?.Invoke();
+            this.SetCurrentTime(this.currentTime - this.duration);
         }
         
 #if ODIN_INSPECTOR

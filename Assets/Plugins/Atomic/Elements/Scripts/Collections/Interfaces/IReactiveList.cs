@@ -5,11 +5,11 @@ namespace Atomic.Elements
     public interface IReactiveList<T> : IList<T>
     {
         event StateChangedHandler OnStateChanged;
-        event ChangeItemHandler<T> OnItemUpdated;
+        event ChangeItemHandler<T> OnItemChanged;
         event InsertItemHandler<T> OnItemInserted;
         event DeleteItemHandler<T> OnItemDeleted;
-        
-        void Update(int index, T value);
+        event ClearHandler OnCleared;
+
         void CopyTo(T[] array);
     }
 }
