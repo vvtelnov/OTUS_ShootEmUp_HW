@@ -75,6 +75,9 @@ GameObject:
   - component: {fileID: 7964997623459932075}
   - component: {fileID: 354380326650615950}
   - component: {fileID: 6486345383869258}
+  - component: {fileID: 7780161382421138505}
+  - component: {fileID: 8937658771507262398}
+  - component: {fileID: 1035178372525265354}
   m_Layer: 0
   m_Name: Zombie
   m_TagString: Untagged
@@ -111,9 +114,9 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!136 &6486345383869258
 CapsuleCollider:
@@ -129,6 +132,59 @@ CapsuleCollider:
   m_Height: 2.4435
   m_Direction: 1
   m_Center: {x: 0, y: 1.27, z: 0}
+--- !u!114 &7780161382421138505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5879414446769212800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3142498ee69840069f3a93c11b1e1f75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoRefresh: 1
+  installOnAwake: 1
+  installPipeline:
+  - {fileID: 8937658771507262398}
+  onInstalled:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &8937658771507262398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5879414446769212800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d46ac04a8bb4b57b3c1e2f683570695, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _moveSpeed: 7
+  _hasInertness: 1
+  _acceleration: 5
+  _deceleration: 150
+  _followRadius: 1.2
+  _attackDamage: 1
+  _attackRadius: 1.2
+  _attackRate: 2
+  _maxHitPoints: 1
+  _hitPoints: 1
+--- !u!114 &1035178372525265354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5879414446769212800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603a745f80e14d1d8cd57cf70a50187f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1696610920246370783
 PrefabInstance:
   m_ObjectHideFlags: 0

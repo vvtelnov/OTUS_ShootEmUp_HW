@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e76fb309170c43a099373e6806c27f2b, type: 3}
+  m_Name: ContextSettings
+  m_EditorClassIdentifier: 
+  <Inactive>k__BackingField: 0
+  categories:
+  - Name: GameContext
+    Namespace: Atomic.Contexts
+    DirectoryPath: Assets/Game/Scripts/Codegen/Context
+    ClassSuffix: API
+    Imports:
+    - Atomic.Entities
+    items:
+    - id: 1
+      name: Player
+      type: SceneEntity
+    - id: 2
+      name: BulletSystem
+      type: SceneEntity
+    - id: 3
+      name: ZombieSystem
+      type: SceneEntity
+  - Name: UIViews
+    Namespace: Atomic.Contexts
+    DirectoryPath: Assets/Game/Scripts/Codegen/Context
+    ClassSuffix: API
+    Imports:
+    - Game.Scripts.UI.Health.Views
+    - Game.Scripts.UI.Ammo.Views
+    - Game.Scripts.UI.Score.Views
+    - Game.Scripts.UI.Score.Presenters
+    - Game.Scripts.UI.GameOver.Views
+    items:
+    - id: 4
+      name: HitPointsView
+      type: IHealthAmountView
+    - id: 5
+      name: MaxHitPointsView
+      type: IHealthMaxAmountView
+    - id: 6
+      name: AmmoView
+      type: IAmmoAmountView
+    - id: 7
+      name: MaxAmmoView
+      type: IMaxAmmoView
+    - id: 8
+      name: ScoreView
+      type: IScoreView
+    - id: 9
+      name: RankView
+      type: IRankView
+    - id: 10
+      name: Ranks
+      type: Ranks
+    - id: 11
+      name: GameOverView
+      type: IGameOverView

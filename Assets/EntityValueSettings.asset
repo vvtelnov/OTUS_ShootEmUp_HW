@@ -1,0 +1,188 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44bae1cf0fb645f197e54e0bd53a7b2f, type: 3}
+  m_Name: EntityValueSettings
+  m_EditorClassIdentifier: 
+  local: 0
+  namespace: Atomic.Entities
+  directoryPath: Assets/Game/Scripts/Codegen/Entity
+  suffix: API
+  imports:
+  - Atomic.Elements
+  categories:
+  - name: Movement
+    indexes:
+    - id: 1
+      name: MoveSpeed
+      type: float
+    - id: 2
+      name: MoveDirection
+      type: Vector3
+    - id: 3
+      name: RotationSpeed
+      type: float
+    - id: 4
+      name: RotateDirection
+      type: Vector3
+    - id: 15
+      name: Acceleration
+      type: float
+    - id: 16
+      name: Deceleration
+      type: float
+    - id: 17
+      name: HasInertness
+      type: bool
+    - id: 19
+      name: FollowRadius
+      type: float
+  - name: Core
+    indexes:
+    - id: 10
+      name: Transform
+      type: Transform
+    - id: 18
+      name: TargetTransform
+      type: Transform
+  - name: Shoot
+    indexes:
+    - id: 5
+      name: ShootDirection
+      type: Vector3
+    - id: 6
+      name: Ammo
+      type: ReactiveVariable<uint>
+    - id: 7
+      name: MaxAmmo
+      type: ReactiveVariable<uint>
+    - id: 20
+      name: ShootPoint
+      type: Transform
+    - id: 21
+      name: OnShootRequested
+      type: BaseEvent
+    - id: 22
+      name: OnShot
+      type: BaseEvent
+    - id: 46
+      name: FireRate
+      type: ReactiveVariable<float>
+    - id: 49
+      name: AmmoRestoreTime
+      type: float
+    - id: 50
+      name: ReloadTime
+      type: float
+    - id: 52
+      name: OnRemoveBullet
+      type: BaseEvent<IEntity>
+  - name: Attack
+    indexes:
+    - id: 36
+      name: OnAttacked
+      type: BaseEvent<int>
+    - id: 37
+      name: AttackDamage
+      type: int
+    - id: 47
+      name: AttackRate
+      type: ReactiveVariable<float>
+    - id: 48
+      name: AttackRadius
+      type: ReactiveVariable<float>
+  - name: Health
+    indexes:
+    - id: 11
+      name: HitPoints
+      type: ReactiveVariable<int>
+    - id: 12
+      name: MaxHitPoints
+      type: ReactiveVariable<int>
+    - id: 14
+      name: IsDead
+      type: ReactiveVariable<bool>
+    - id: 34
+      name: OnDeath
+      type: BaseEvent<IEntity>
+    - id: 13
+      name: OnTakeDamage
+      type: BaseEvent<int>
+    - id: 43
+      name: OnDamageIsTaken
+      type: BaseEvent
+  - name: Pool
+    indexes:
+    - id: 23
+      name: Prefab
+      type: SceneEntity
+    - id: 24
+      name: PoolContainer
+      type: Transform
+    - id: 25
+      name: WorldContainer
+      type: Transform
+    - id: 26
+      name: InitalCount
+      type: int
+  - name: Time
+    indexes:
+    - id: 27
+      name: Timer
+      type: Timer
+    - id: 28
+      name: TimerDuration
+      type: float
+  - name: EnemySpawn
+    indexes:
+    - id: 32
+      name: OnEnemySpawnRequested
+      type: BaseEvent
+    - id: 39
+      name: OnEnemyIsSpawning
+      type: BaseEvent<Vector3>
+    - id: 8
+      name: OnEnemySpawned
+      type: BaseEvent
+    - id: 40
+      name: SpawnDistance
+      type: float
+  - name: AndExpressions
+    indexes:
+    - id: 38
+      name: CanMove
+      type: AndExpression
+    - id: 9
+      name: CanAttack
+      type: AndExpression
+    - id: 35
+      name: CanShoot
+      type: AndExpression
+    - id: 29
+      name: CanSpawn
+      type: AndExpression
+    - id: 41
+      name: CanRotate
+      type: AndExpression
+    - id: 42
+      name: CanTakeDamage
+      type: AndExpression
+    - id: 51
+      name: CanAddAmmoToMagazine
+      type: AndExpression
+  - name: Score
+    indexes:
+    - id: 44
+      name: Score
+      type: ReactiveVariable<int>
+    - id: 45
+      name: StartScore
+      type: int
