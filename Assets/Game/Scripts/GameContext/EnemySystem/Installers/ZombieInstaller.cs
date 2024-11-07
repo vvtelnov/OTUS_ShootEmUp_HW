@@ -54,6 +54,7 @@ namespace Game.Scripts.GameContext.EnemySystem.Installers
             entity.AddAcceleration(_acceleration);
             entity.AddDeceleration(_deceleration);
             entity.AddFollowRadius(_followRadius);
+            entity.AddMoveDirection(Vector3.zero);
             
             // Attack
             entity.AddAttackDamage(_attackDamage);

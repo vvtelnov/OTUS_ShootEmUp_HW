@@ -30,6 +30,8 @@ namespace Game.Scripts.Behaviours.Movement
             if (!_canMove.Invoke())
                 return;
 
+            _moveDirection = entity.GetMoveDirection().Value;
+
             if (_hasInertness)
             {
                 MoveWithInertia(entity, deltaTime);
@@ -38,11 +40,6 @@ namespace Game.Scripts.Behaviours.Movement
             {
                 Move(deltaTime);
             }
-        }
-
-        public void SetDirection(Vector3 direction)
-        {
-            _moveDirection = direction;
         }
 
         private void Move(float deltaTime)

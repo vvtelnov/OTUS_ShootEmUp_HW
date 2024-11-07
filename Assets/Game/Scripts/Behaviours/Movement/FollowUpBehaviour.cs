@@ -7,7 +7,6 @@ namespace Game.Scripts.Behaviours.Movement
     {
         private Transform _target;
         private Transform _thisTransform;
-        private float _speed;
         private float _followRadius;
         
         private MovementBehavior _movementBehavior;
@@ -17,11 +16,7 @@ namespace Game.Scripts.Behaviours.Movement
         {
             _target = entity.GetTargetTransform();
             _thisTransform = entity.GetTransform();
-            _speed = entity.GetMoveSpeed();
             _followRadius = entity.GetFollowRadius();
-            
-            //TODO: Сделать его независимым
-            _movementBehavior = entity.GetBehaviour<MovementBehavior>();
         }
 
         void IEntityUpdate.OnUpdate(IEntity entity, float deltaTime)
@@ -36,8 +31,8 @@ namespace Game.Scripts.Behaviours.Movement
             {
                 direction = targetOffset.normalized;
             }
-            
-            _movementBehavior.SetDirection(direction);
+
+            entity.SetMoveDirection(direction);
         }
     }
 }

@@ -26,7 +26,7 @@ MonoBehaviour:
       type: float
     - id: 2
       name: MoveDirection
-      type: Vector3
+      type: ReactiveVariable<Vector3>
     - id: 3
       name: RotationSpeed
       type: float
@@ -186,3 +186,8 @@ MonoBehaviour:
     - id: 45
       name: StartScore
       type: int
+  - name: Visual
+    indexes:
+    - id: 30
+      name: Animator
+      type: Animator

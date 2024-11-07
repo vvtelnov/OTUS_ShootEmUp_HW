@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Atomic.Elements;
 using Atomic.Entities;
 using Game.Scripts.Behaviours;
 using Game.Scripts.Behaviours.Movement;
@@ -6,19 +7,12 @@ using UnityEngine;
 
 namespace Game.Scripts.Controllers
 {
-    public class KeyboardInput : IEntityInit, IEntityUpdate
+    public class KeyboardInput : IEntityUpdate
     {
-        private MovementBehavior _movementBehavior;
-        
         private readonly KeyCode _moveForwardKey = KeyCode.W;
         private readonly KeyCode _moveBackwardKey = KeyCode.S;
         private readonly KeyCode _moveLeftKey = KeyCode.A;
         private readonly KeyCode _moveRightKey = KeyCode.D;
-
-        void IEntityInit.Init(IEntity entity)
-        {
-            _movementBehavior = entity.GetBehaviour<MovementBehavior>();
-        }
 
         void IEntityUpdate.OnUpdate(IEntity entity, float deltaTime)
         {
@@ -33,14 +27,7 @@ namespace Game.Scripts.Controllers
             if (Input.GetKey(_moveRightKey))
                 moveDirection += Vector3.right;
 
-            SetMoveDirection(moveDirection.normalized);
+            entity.GetMoveDirection().Value = moveDirection.normalized;
         }
-
-        private void SetMoveDirection(Vector3 direction)
-        {
-            _movementBehavior.SetDirection(direction); 
-        }
-
-        
     }
 }

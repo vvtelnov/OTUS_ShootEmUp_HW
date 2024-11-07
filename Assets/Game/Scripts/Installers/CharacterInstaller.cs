@@ -60,7 +60,7 @@ namespace Game.Scripts.Installers
             entity.AddDeceleration(_deceleration);
             entity.AddHasInertness(_hasInertness);
             InstallCanMoveConditions(entity);
-            // entity.AddMoveDirection(_moveDirection);
+            entity.AddMoveDirection(Vector3.zero);
 
             // Rotation
             // entity.AddRotationSpeed(_rotationSpeed);

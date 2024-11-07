@@ -37,14 +37,12 @@ namespace Game.Scripts.GameContext.BulletSystem
 
         private void StartMove()
         {
-            MovementBehavior movementBehavior = _entity.GetBehaviour<MovementBehavior>();
-            movementBehavior.SetDirection(_entity.GetShootPoint().forward);
+            _entity.SetMoveDirection(_entity.GetShootPoint().forward);
         }
 
         private void StopMove()
         {
-            MovementBehavior movementBehavior = _entity.GetBehaviour<MovementBehavior>();
-            movementBehavior.SetDirection(Vector3.zero);
+            _entity.SetMoveDirection(Vector3.zero);
         }
 
         private void StartTimer()

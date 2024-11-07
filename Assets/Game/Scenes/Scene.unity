@@ -209,6 +209,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _installPipeline:
   - {fileID: 707303525}
+  - {fileID: 128061693}
   - {fileID: 170725780}
   - {fileID: 1046829125}
   - {fileID: 1980450348533929289}
@@ -483,6 +484,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _textField: {fileID: 61847665}
+--- !u!114 &128061693 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114965202, guid: 3b5b2ae0f895574449961910366cbf8a,
+    type: 3}
+  m_PrefabInstance: {fileID: 625937915}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3142498ee69840069f3a93c11b1e1f75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &136879056
 GameObject:
   m_ObjectHideFlags: 0
@@ -1217,11 +1230,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5833907587508707809, guid: 3b5b2ae0f895574449961910366cbf8a,
-        type: 3}
-      propertyPath: _fireRate
-      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 6378945258768650400, guid: 3b5b2ae0f895574449961910366cbf8a,
         type: 3}
@@ -3081,7 +3089,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8117229fce3642d4abbd6ab98327a95f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsEnable: 1
+  IsEnable: 0
 --- !u!1 &1783081963
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,6 +20,7 @@ namespace Game.Scripts.GameContext.BulletSystem.Installers
 
             entity.AddOnRemoveBullet(new BaseEvent<IEntity>());
             entity.AddMoveSpeed(bulletSystem.GetMoveSpeed());
+            entity.AddMoveDirection(Vector3.zero);
             entity.AddShootPoint(bulletSystem.GetShootPoint());
             entity.AddHasInertness(false);
             entity.AddTransform(transform);
