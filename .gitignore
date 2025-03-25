@@ -79,3 +79,6 @@ ShootEmUp (Dirty).sln
 .idea
 
 .DS_Store
+
+#Dark Theam For Unity
+Assets/Plugins/UnityEditorDarkMode
